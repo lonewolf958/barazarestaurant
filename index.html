@@ -1,131 +1,271 @@
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+  <!-- Basic Page Settings -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Baraza Restaurant &amp; Cafe | A Place to Gather, A Taste to Remember</title>
-  <meta name="description" content="Welcome to Baraza Restaurant &amp; Cafe. View our table menu or order your favourite meals online.">
 
+  <!-- Website Title and Description -->
+  <title>Baraza Restaurant &amp; Cafe | A Place to Gather, A Taste to Remember</title>
+  <meta
+    name="description"
+    content="Welcome to Baraza Restaurant &amp; Cafe. View our table menu or order your favourite meals online."
+  >
+
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
 
+  <!-- Main Stylesheet -->
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
+  <!-- ==========================================
+       1. WEBSITE HEADER
+       Logo, restaurant name, address, hours,
+       phone numbers, and delivery information.
+       ========================================== -->
   <header class="site-header">
     <div class="header-inner">
+
+      <!-- Restaurant Logo -->
       <div class="brand-logo">
-        <img src="logo.jpeg" alt="Baraza Restaurant &amp; Cafe Logo">
+        <img
+          src="logo.jpeg"
+          alt="Baraza Restaurant &amp; Cafe Logo"
+        >
       </div>
 
+      <!-- Restaurant Name and Tagline -->
       <div class="brand-copy">
         <p class="brand-eyebrow"></p>
-        <h1 class="brand-name">Baraza Restaurant &amp; Cafe</h1>
-        <p class="brand-tagline">A Place to Gather, A Taste to Remember.</p>
+
+        <h1 class="brand-name">
+          Baraza Restaurant &amp; Cafe
+        </h1>
+
+        <p class="brand-tagline">
+          A Place to Gather, A Taste to Remember.
+        </p>
       </div>
 
+      <!-- Restaurant Contact and Business Information -->
       <div class="header-strip">
+
+        <!-- Restaurant Address -->
         <div class="header-strip-item">
           <span class="header-icon">📍</span>
           <span>Corner of Mtitu &amp; Kalenga Street, Upanga.</span>
         </div>
+
+        <!-- Opening Hours -->
         <div class="header-strip-item">
           <span class="header-icon">🕛</span>
-          <span>Friday - Wednesday: 6:30 PM - 11:30 PM<br>Thursday: Closed.</span>
+          <span>
+            Friday - Wednesday: 6:30 PM - 11:30 PM<br>
+            Thursday: Closed.
+          </span>
         </div>
+
+        <!-- Primary Contact Number -->
         <div class="header-strip-item">
           <span class="header-icon">📞</span>
           <a href="tel:0784786771">0784 786 771</a>
         </div>
-        <br>
+
+        <!-- Secondary Contact Number -->
         <div class="header-strip-item">
           <span class="header-icon">📞</span>
           <a href="tel:0753423253">0753 423 253</a>
         </div>
+
+        <!-- Delivery Information -->
         <div class="header-strip-item">
           <span class="header-icon">🛵</span>
           <span>We do Home Delivery.</span>
         </div>
+
       </div>
     </div>
   </header>
 
+
+  <!-- ==========================================
+       2. MAIN CONTENT
+       Customer navigation and event promotion.
+       ========================================== -->
   <main>
 
-    <section class="choose" id="choose" aria-labelledby="choose-heading">
-      <h2 id="choose-heading" class="section-heading">How would you like to continue?</h2>
+    <!-- TABLE MENU AND ONLINE ORDERING OPTIONS -->
+    <section
+      class="choose"
+      id="choose"
+      aria-labelledby="choose-heading"
+    >
+      <h2 id="choose-heading" class="section-heading">
+        How would you like to continue?
+      </h2>
 
       <div class="choice-grid">
+
+        <!-- Option 1: Table Menu -->
         <a href="index1.html" class="choice-card choice-card--menu">
           <span class="choice-icon" aria-hidden="true">📖</span>
+
           <h3>Table Menu</h3>
-          <p>View our menu and explore our delicious meals.</p>
-          <span class="choice-button">View Table Menu</span>
+
+          <p>
+            View our menu and explore our delicious meals.
+          </p>
+
+          <span class="choice-button">
+            View Table Menu
+          </span>
         </a>
 
+        <!-- Option 2: Online Ordering -->
         <a href="index2.html" class="choice-card choice-card--order">
           <span class="choice-icon" aria-hidden="true">🛒</span>
+
           <h3>Order Online</h3>
-          <p>Browse our menu and place your order online for delivery or pickup.</p>
-          <span class="choice-button">Order Online</span>
+
+          <p>
+            Browse our menu and place your order online for delivery or pickup.
+          </p>
+
+          <span class="choice-button">
+            Order Online
+          </span>
         </a>
+
       </div>
     </section>
 
+
+    <!-- ==========================================
+         3. EVENTS AND CELEBRATIONS
+         Promotes the restaurant as an event venue.
+         ========================================== -->
     <section class="about" aria-labelledby="about-heading">
-      <h2 id="about-heading" class="section-heading section-heading--left">Celebrate Your Special Moments at Baraza.</h2>
+
+      <h2
+        id="about-heading"
+        class="section-heading section-heading--left"
+      >
+        Celebrate Your Special Moments at Baraza.
+      </h2>
+
       <div class="about-inner">
+
+        <!-- Event Venue Image -->
         <div class="about-image-frame">
-          <img src="Event.jpeg" alt="Event Area" loading="lazy" onerror="this.closest('.about-image-frame').classList.add('image-fallback')">
-          <div class="fallback-label" aria-hidden="true"><span>Event.jpeg</span></div>
+          <img
+            src="Event.jpeg"
+            alt="Event Area"
+            loading="lazy"
+            onerror="this.closest('.about-image-frame').classList.add('image-fallback')"
+          >
+
+          <!-- Displayed if the event image fails to load -->
+          <div class="fallback-label" aria-hidden="true">
+            <span>Event.jpeg</span>
+          </div>
         </div>
+
+        <!-- Event Information and Booking Contact -->
         <div class="about-text">
-          <p><strong>A Beautiful Space For Every Celebration.</strong></p>
+
           <p>
-            Make your special occasions unforgettable at Baraza Restaurant &amp; Cafe. Whether you're planning a wedding, an engagement celebration, a birthday party, an anniversary, or a private event,
-            we're here to help you create meaningful memories with the people who matter most.
+            <strong>A Beautiful Space For Every Celebration.</strong>
           </p>
-          <p><strong>Your occasion. Your people. Your memories.</strong></p>
+
           <p>
-            Planning an event? Contact us to enquire about our venue, availability, and booking arrangements.<br>
+            Make your special occasions unforgettable at Baraza Restaurant &amp; Cafe.
+            Whether you're planning a wedding, an engagement celebration, a birthday
+            party, an anniversary, or a private event, we're here to help you create
+            meaningful memories with the people who matter most.
+          </p>
+
+          <p>
+            <strong>Your occasion. Your people. Your memories.</strong>
+          </p>
+
+          <p>
+            Planning an event? Contact us to enquire about our venue, availability,
+            and booking arrangements.
+            <br>
             📞 <a href="tel:0784786771">0784 786 771</a>
           </p>
+
         </div>
       </div>
     </section>
 
   </main>
 
+
+  <!-- ==========================================
+       4. WEBSITE FOOTER
+       Restaurant details, contact information,
+       and copyright notice.
+       ========================================== -->
   <footer class="site-footer">
     <div class="footer-inner">
+
+      <!-- Footer Brand -->
       <div class="footer-brand">
-        <p class="footer-name">Baraza Restaurant &amp; Cafe.</p>
-        <p class="footer-tagline">A Place to Gather, A Taste to Remember.</p>
+        <p class="footer-name">
+          Baraza Restaurant &amp; Cafe.
+        </p>
+
+        <p class="footer-tagline">
+          A Place to Gather, A Taste to Remember.
+        </p>
       </div>
 
+      <!-- Address and Ordering Information -->
       <div class="footer-details">
         <p class="footer-heading">Visit &amp; Order</p>
-        <p>Corner of Mtitu &amp; Kalenga Street, Upanga.</p>
+
+        <p>
+          Corner of Mtitu &amp; Kalenga Street, Upanga.
+        </p>
+
         <p>
           📞 <a href="tel:0784786771">0784 786 771</a>
           &nbsp;·&nbsp;
           📞 <a href="tel:0753423253">0753 423 253</a>
         </p>
+
         <p>We do home delivery.</p>
       </div>
 
+      <!-- Events and Bookings -->
       <div class="footer-catering">
-        <p class="footer-heading">We do Events &amp; Bookings.</p>
+        <p class="footer-heading">
+          We do Events &amp; Bookings.
+        </p>
       </div>
+
     </div>
 
+    <!-- Copyright Year: Populated by script.js -->
     <p class="footer-copyright">
       © <span id="year"></span> Baraza Restaurant &amp; Cafe. All rights reserved.
     </p>
   </footer>
 
+
+  <!-- Main JavaScript -->
   <script src="script.js"></script>
+
 </body>
 </html>
