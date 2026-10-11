@@ -1,179 +1,870 @@
+
 /* ==========================================================================
-   BARAZA — ORDER PAGE STYLES (index2.html)
-   Load AFTER style.css and style1.css.
+   BARAZA RESTAURANT & CAFE
+   Online Ordering Styles — index2.html
+
+   File: style2.css
+
+   Load order:
+   1. style.css  — shared website styles
+   2. style1.css — menu styles
+   3. style2.css — ordering and cart styles
+
+   Colors, fonts, borders, and radius variables are defined in style.css.
    ========================================================================== */
 
-.menu-content { padding-bottom: 110px; }
 
-/* ---------- Menu item: info row + actions row ---------- */
-.menu-item { flex-direction: column; align-items: stretch; flex-wrap: nowrap; }
-.menu-item-top { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 8px 14px; }
-.menu-item-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 8px; margin-top: 10px; }
+/* ==========================================================================
+   1. MENU LAYOUT
+   Extra bottom space prevents the floating cart button from covering items.
+   ========================================================================== */
 
-/* side choice (rice / naan / chips / noodles) */
-.side-select {
-  flex: 1 1 170px; min-width: 0; max-width: 260px;
-  min-height: 38px; padding: 7px 10px;
-  border: 1.5px solid var(--line); border-radius: 999px;
-  background: var(--cream); color: var(--ink);
-  font-family: var(--font-body); font-size: 13px; cursor: pointer;
+.menu-content {
+  padding-bottom: 110px;
 }
-.side-select:focus-visible { outline: 3px solid var(--red); outline-offset: 2px; }
-.side-select.needs-side { border-color: var(--red); background: #fdecec; animation: nudge 0.35s ease; }
-@keyframes nudge { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+
+
+/* ==========================================================================
+   2. MENU ITEM LAYOUT
+   Separates the dish information from its choices and Add to Cart button.
+   ========================================================================== */
+
+.menu-item {
+  flex-direction: column;
+  align-items: stretch;
+  flex-wrap: nowrap;
+}
+
+/* Dish name, description, and price */
+.menu-item-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px 14px;
+}
+
+/* Dropdown choices and Add to Cart button */
+.menu-item-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+
+/* ==========================================================================
+   3. MENU CHOICE DROPDOWNS
+   Used for Fried/BBQ choices, protein choices, and side dishes.
+   ========================================================================== */
+
+.side-select {
+  flex: 1 1 170px;
+  min-width: 0;
+  max-width: 260px;
+
+  min-height: 38px;
+  padding: 7px 10px;
+
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+
+  background: var(--cream);
+  color: var(--ink);
+
+  font-family: var(--font-body);
+  font-size: 13px;
+
+  cursor: pointer;
+}
+
+/* Keyboard focus */
+.side-select:focus-visible {
+  outline: 3px solid var(--red);
+  outline-offset: 2px;
+}
+
+/* Highlight a required choice that the customer has not selected */
+.side-select.needs-side {
+  border-color: var(--red);
+  background: #fdecec;
+  animation: nudge 0.35s ease;
+}
+
+/* Small horizontal movement to draw attention to a missing choice */
+@keyframes nudge {
+  25% {
+    transform: translateX(-4px);
+  }
+
+  75% {
+    transform: translateX(4px);
+  }
+}
+
+
+/* ==========================================================================
+   4. ADD TO CART BUTTON
+   ========================================================================== */
 
 .add-cart-btn {
-  flex-shrink: 0; min-height: 38px; padding: 7px 16px;
-  border: 1.5px solid var(--red); background: transparent; color: var(--red);
-  font-weight: 600; font-size: 13px; border-radius: 999px; cursor: pointer; white-space: nowrap;
-  transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
-}
-.add-cart-btn:hover { background: var(--red); color: var(--paper); }
-.add-cart-btn:active { transform: scale(0.96); }
-.add-cart-btn.added { background: var(--gold); border-color: var(--gold); color: var(--red-dark); }
+  flex-shrink: 0;
 
-/* ---------- Floating cart button ---------- */
+  min-height: 38px;
+  padding: 7px 16px;
+
+  border: 1.5px solid var(--red);
+  border-radius: 999px;
+
+  background: transparent;
+  color: var(--red);
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+  white-space: nowrap;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s ease;
+}
+
+/* Hover appearance */
+.add-cart-btn:hover {
+  background: var(--red);
+  color: var(--paper);
+}
+
+/* Press animation */
+.add-cart-btn:active {
+  transform: scale(0.96);
+}
+
+/* Temporary appearance after a successful add */
+.add-cart-btn.added {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--red-dark);
+}
+
+
+/* ==========================================================================
+   5. FLOATING CART BUTTON
+   Fixed to the bottom-right corner of the screen.
+   ========================================================================== */
+
 .cart-fab {
-  position: fixed; right: 16px; bottom: 16px; z-index: 80;
-  display: flex; align-items: center; gap: 8px;
-  background: var(--red); color: var(--paper); border: 0; border-radius: 999px;
-  font-weight: 600; font-size: 15px; padding: 13px 20px; cursor: pointer;
-  box-shadow: 0 10px 24px rgba(63, 15, 15, 0.4); transition: transform 0.15s ease;
-}
-.cart-fab:hover { transform: translateY(-2px); }
-.cart-fab-count {
-  min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px;
-  background: var(--gold); color: var(--red-dark);
-  font-size: 12.5px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 80;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 13px 20px;
+
+  border: 0;
+  border-radius: 999px;
+
+  background: var(--red);
+  color: var(--paper);
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-shadow: 0 10px 24px rgba(63, 15, 15, 0.4);
+
+  transition: transform 0.15s ease;
 }
 
-/* ---------- Overlay + drawer ---------- */
-.cart-overlay { position: fixed; inset: 0; z-index: 90; background: rgba(43, 10, 16, 0.55); opacity: 0; transition: opacity 0.25s ease; }
-.cart-overlay.visible { opacity: 1; }
-body.cart-open { overflow: hidden; }
+.cart-fab:hover {
+  transform: translateY(-2px);
+}
+
+/* Number of items currently in the cart */
+.cart-fab-count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+
+  border-radius: 999px;
+
+  background: var(--gold);
+  color: var(--red-dark);
+
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+
+/* ==========================================================================
+   6. CART OVERLAY
+   Darkens the page behind the open cart drawer.
+   ========================================================================== */
+
+.cart-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+
+  background: rgba(43, 10, 16, 0.55);
+
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+/* Visible state controlled by JavaScript */
+.cart-overlay.visible {
+  opacity: 1;
+}
+
+/* Prevent the page behind the cart from scrolling */
+body.cart-open {
+  overflow: hidden;
+}
+
+
+/* ==========================================================================
+   7. CART DRAWER
+   Mobile: slides up from the bottom.
+   Desktop: becomes a centered modal.
+   ========================================================================== */
 
 .cart-drawer {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 100;
-  display: flex; flex-direction: column;
-  max-height: 92vh; max-height: 92dvh;
-  background: var(--paper); border-radius: 20px 20px 0 0;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+
+  display: flex;
+  flex-direction: column;
+
+  max-height: 92vh;
+  max-height: 92dvh;
+
+  background: var(--paper);
+
+  border-radius: 20px 20px 0 0;
+
   box-shadow: 0 -8px 30px rgba(63, 15, 15, 0.3);
-  transform: translateY(100%); transition: transform 0.28s ease;
+
+  transform: translateY(100%);
+  transition: transform 0.28s ease;
 }
-.cart-drawer.open { transform: translateY(0); }
+
+/* Open state controlled by JavaScript */
+.cart-drawer.open {
+  transform: translateY(0);
+}
+
+
+/* ==========================================================================
+   8. CART HEADER
+   Contains the cart title and close button.
+   ========================================================================== */
 
 .cart-drawer-header {
-  flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between;
-  padding: 16px 18px 12px; border-bottom: 1px solid var(--line);
-}
-.cart-drawer-header h2 { margin: 0; font-size: 1.2rem; color: var(--red); }
-.cart-close-btn {
-  width: 34px; height: 34px; border: 0; border-radius: 50%; cursor: pointer;
-  background: rgba(63, 15, 15, 0.08); color: var(--red-dark); font-size: 16px;
+  flex: 0 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 16px 18px 12px;
+
+  border-bottom: 1px solid var(--line);
 }
 
-/* everything below the header scrolls together */
-.cart-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
-.cart-items { display: flex; flex-direction: column; gap: 10px; padding: 12px 18px; }
+/* Cart title */
+.cart-drawer-header h2 {
+  margin: 0;
+
+  color: var(--red);
+  font-size: 1.2rem;
+}
+
+/* Close button */
+.cart-close-btn {
+  width: 34px;
+  height: 34px;
+
+  border: 0;
+  border-radius: 50%;
+
+  background: rgba(63, 15, 15, 0.08);
+  color: var(--red-dark);
+
+  font-size: 16px;
+  cursor: pointer;
+}
+
+
+/* ==========================================================================
+   9. CART BODY AND ITEM LIST
+   The content below the header scrolls independently.
+   ========================================================================== */
+
+.cart-body {
+  flex: 1 1 auto;
+  min-height: 0;
+
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* Container for all selected cart items */
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  padding: 12px 18px;
+}
+
+
+/* ==========================================================================
+   10. INDIVIDUAL CART ITEM
+   ========================================================================== */
 
 .cart-item {
-  display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  background: var(--cream); border: 1px solid var(--line); border-radius: var(--r-md); padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding: 12px 14px;
+
+  background: var(--cream);
+
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
 }
-.cart-item-info { min-width: 0; flex: 1 1 auto; }
-.cart-item-name { margin: 0; font-weight: 600; font-size: 14.5px; line-height: 1.35; overflow-wrap: anywhere; }
-.cart-item-unit-price { margin: 3px 0 0; font-size: 12px; color: var(--ink-soft); }
-.cart-item-controls { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
-.cart-qty { display: flex; align-items: center; gap: 8px; }
+
+/* Dish name and unit price */
+.cart-item-info {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.cart-item-name {
+  margin: 0;
+
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 1.35;
+
+  overflow-wrap: anywhere;
+}
+
+.cart-item-unit-price {
+  margin: 3px 0 0;
+
+  color: var(--ink-soft);
+  font-size: 12px;
+}
+
+/* Quantity controls, subtotal, and Remove button */
+.cart-item-controls {
+  flex: 0 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+
+/* ==========================================================================
+   11. QUANTITY CONTROLS
+   ========================================================================== */
+
+.cart-qty {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Increase and decrease buttons */
 .cart-qty-btn {
-  width: 30px; height: 30px; flex: 0 0 30px; border-radius: 50%; cursor: pointer;
-  border: 1.5px solid var(--red); background: var(--paper); color: var(--red);
-  font-size: 16px; font-weight: 700; line-height: 1; display: flex; align-items: center; justify-content: center;
-}
-.cart-qty-value { min-width: 18px; text-align: center; font-weight: 600; font-size: 14px; }
-.cart-item-subtotal { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: 14px; color: var(--red); white-space: nowrap; }
-.cart-remove-btn { border: 0; background: none; padding: 2px; cursor: pointer; font-size: 11.5px; color: var(--ink-soft); text-decoration: underline; }
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-.cart-empty { padding: 40px 24px 44px; text-align: center; color: var(--ink-soft); }
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+
+  border: 1.5px solid var(--red);
+  border-radius: 50%;
+
+  background: var(--paper);
+  color: var(--red);
+
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+
+  cursor: pointer;
+}
+
+/* Quantity number */
+.cart-qty-value {
+  min-width: 18px;
+
+  text-align: center;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+
+/* ==========================================================================
+   12. CART SUBTOTAL AND REMOVE BUTTON
+   ========================================================================== */
+
+.cart-item-subtotal {
+  margin: 0;
+
+  color: var(--red);
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+.cart-remove-btn {
+  padding: 2px;
+
+  border: 0;
+  background: none;
+
+  color: var(--ink-soft);
+  font-size: 11.5px;
+  text-decoration: underline;
+
+  cursor: pointer;
+}
+
+
+/* ==========================================================================
+   13. EMPTY CART STATE
+   Shown when there are no items in the cart.
+   ========================================================================== */
+
+.cart-empty {
+  padding: 40px 24px 44px;
+
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+/* Browse Menu button */
 .cart-browse-btn {
-  padding: 10px 22px; border: 1.5px solid var(--red); background: transparent; color: var(--red);
-  font-weight: 600; font-size: 14px; border-radius: 999px; cursor: pointer;
+  padding: 10px 22px;
+
+  border: 1.5px solid var(--red);
+  border-radius: 999px;
+
+  background: transparent;
+  color: var(--red);
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
 }
 
-/* ---------- Order details ---------- */
-.cart-footer { padding: 6px 18px calc(18px + env(safe-area-inset-bottom)); }
+
+/* ==========================================================================
+   14. CHECKOUT FOOTER AND ORDER DETAILS
+   Contains Delivery/Pickup selection and customer information.
+   ========================================================================== */
+
+.cart-footer {
+  padding: 6px 18px calc(18px + env(safe-area-inset-bottom));
+}
+
+/* Main checkout details card */
 .order-details-box {
-  position: relative; margin-bottom: 14px; padding: 16px 16px 14px;
-  background: var(--cream); border: 1.5px solid var(--line); border-radius: var(--r-lg);
+  position: relative;
+
+  margin-bottom: 14px;
+  padding: 16px 16px 14px;
+
+  background: var(--cream);
+
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-lg);
 }
+
+/* Decorative red stripe on the left of the details card */
 .order-details-box::before {
-  content: ""; position: absolute; top: 10px; bottom: 10px; left: 0; width: 4px;
-  border-radius: 0 4px 4px 0; background: var(--red);
-}
-.order-type-label { display: flex; align-items: center; gap: 8px; margin: 0 0 10px; font-weight: 600; font-size: 13px; color: var(--red-dark); }
-.order-type-label-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); }
+  content: "";
 
-.order-type-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 9px; }
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: 0;
+
+  width: 4px;
+
+  background: var(--red);
+  border-radius: 0 4px 4px 0;
+}
+
+
+/* ==========================================================================
+   15. ORDER TYPE LABEL
+   ========================================================================== */
+
+.order-type-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin: 0 0 10px;
+
+  color: var(--red-dark);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Gold indicator beside the label */
+.order-type-label-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: var(--gold);
+}
+
+
+/* ==========================================================================
+   16. DELIVERY AND PICKUP BUTTONS
+   ========================================================================== */
+
+.order-type-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 9px;
+}
+
+/* Default order type button */
 .order-type-btn {
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
-  min-height: 70px; padding: 10px 4px; cursor: pointer; text-align: center;
-  border: 1.5px solid var(--line); background: var(--paper); color: var(--ink-soft);
-  font-weight: 600; font-size: 12px; border-radius: var(--r-md);
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+
+  min-height: 70px;
+  padding: 10px 4px;
+
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-md);
+
+  background: var(--paper);
+  color: var(--ink-soft);
+
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s ease;
 }
-.order-type-icon { font-size: 19px; line-height: 1; }
-.order-type-btn:hover { border-color: var(--red); }
-.order-type-btn:active { transform: scale(0.96); }
-.order-type-btn.active { background: var(--red); border-color: var(--red); color: var(--paper); box-shadow: 0 4px 12px rgba(175, 40, 40, 0.3); }
-.order-type-hint { margin: 10px 2px 0; font-size: 11.5px; color: var(--ink-soft); font-style: italic; }
 
-.order-details-divider { height: 1px; margin: 14px 2px 12px; background: var(--line); }
+/* Emoji icon */
+.order-type-icon {
+  font-size: 19px;
+  line-height: 1;
+}
 
-.cart-customer-fields, .cart-group { display: flex; flex-direction: column; gap: 8px; }
-.cart-input-label { font-size: 12.5px; font-weight: 600; color: var(--red-dark); margin-bottom: -4px; }
+/* Hover and press effects */
+.order-type-btn:hover {
+  border-color: var(--red);
+}
+
+.order-type-btn:active {
+  transform: scale(0.96);
+}
+
+/* Selected order type */
+.order-type-btn.active {
+  background: var(--red);
+  border-color: var(--red);
+  color: var(--paper);
+
+  box-shadow: 0 4px 12px rgba(175, 40, 40, 0.3);
+}
+
+/* Instruction shown before the customer chooses an order type */
+.order-type-hint {
+  margin: 10px 2px 0;
+
+  color: var(--ink-soft);
+  font-size: 11.5px;
+  font-style: italic;
+}
+
+
+/* ==========================================================================
+   17. CHECKOUT DIVIDER
+   ========================================================================== */
+
+.order-details-divider {
+  height: 1px;
+  margin: 14px 2px 12px;
+
+  background: var(--line);
+}
+
+
+/* ==========================================================================
+   18. CUSTOMER INPUT FIELDS
+   Includes name, phone, delivery details, and optional notes.
+   ========================================================================== */
+
+.cart-customer-fields,
+.cart-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Labels above fields */
+.cart-input-label {
+  margin-bottom: -4px;
+
+  color: var(--red-dark);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+/* Shared input and textarea styles */
 .cart-input {
-  width: 100%; min-height: 42px; padding: 10px 12px;
-  border: 1.5px solid var(--line); border-radius: var(--r-md);
-  background: var(--paper); color: var(--ink);
-  font-family: var(--font-body); font-size: 13.5px;
-}
-.cart-input:focus-visible { outline: 3px solid var(--red); outline-offset: 1px; }
-.cart-textarea { min-height: 82px; resize: none; overflow: hidden; line-height: 1.45; }
-.cart-textarea::placeholder { color: var(--ink-soft); opacity: 0.8; }
+  width: 100%;
+  min-height: 42px;
+  padding: 10px 12px;
 
-/* ---------- Totals + WhatsApp ---------- */
-.cart-total-breakdown { margin-bottom: 12px; }
-.cart-total-line { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 4px 0; font-size: 14px; }
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-md);
+
+  background: var(--paper);
+  color: var(--ink);
+
+  font-family: var(--font-body);
+  font-size: 13.5px;
+}
+
+/* Keyboard focus */
+.cart-input:focus-visible {
+  outline: 3px solid var(--red);
+  outline-offset: 1px;
+}
+
+/* Optional customer notes */
+.cart-textarea {
+  min-height: 82px;
+
+  resize: none;
+  overflow: hidden;
+
+  line-height: 1.45;
+}
+
+/* Placeholder text */
+.cart-textarea::placeholder {
+  color: var(--ink-soft);
+  opacity: 0.8;
+}
+
+
+/* ==========================================================================
+   19. PRICE SUMMARY
+   Shows food total, delivery fee, and final total.
+   ========================================================================== */
+
+.cart-total-breakdown {
+  margin-bottom: 12px;
+}
+
+/* Individual total row */
+.cart-total-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding: 4px 0;
+
+  font-size: 14px;
+}
+
+/* Final total row */
 .cart-grand-total {
-  margin-top: 6px; padding-top: 10px; border-top: 1px solid var(--line);
-  font-family: var(--font-display); font-weight: 700; font-size: 17px; color: var(--red);
-}
-.whatsapp-btn {
-  display: block; width: 100%; min-height: 48px; margin-bottom: 8px; padding: 14px 16px;
-  border: 0; border-radius: 999px; cursor: pointer;
-  background: #25D366; color: #06210F; font-weight: 700; font-size: 15.5px;
-}
-.whatsapp-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.whatsapp-btn:not(:disabled):hover { filter: brightness(1.05); }
-.whatsapp-hint { margin: 0 0 10px; font-size: 11.5px; line-height: 1.4; color: var(--ink-soft); text-align: center; }
-.clear-cart-btn { display: block; width: 100%; padding: 6px; border: 0; background: none; cursor: pointer; font-size: 12.5px; color: var(--ink-soft); text-decoration: underline; }
+  margin-top: 6px;
+  padding-top: 10px;
 
-/* ---------- Desktop: drawer becomes a centered modal ---------- */
-@media (min-width: 700px) {
-  .cart-drawer {
-    left: 50%; right: auto; bottom: 50%;
-    width: 440px; max-width: calc(100vw - 40px); max-height: 85vh;
-    border-radius: var(--r-lg);
-    transform: translate(-50%, 50%) scale(0.96); opacity: 0;
-    transition: transform 0.25s ease, opacity 0.25s ease;
-  }
-  .cart-drawer.open { transform: translate(-50%, 50%) scale(1); opacity: 1; }
+  border-top: 1px solid var(--line);
+
+  color: var(--red);
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
 }
+
+
+/* ==========================================================================
+   20. WHATSAPP ORDER BUTTON
+   ========================================================================== */
+
+.whatsapp-btn {
+  display: block;
+
+  width: 100%;
+  min-height: 48px;
+
+  margin-bottom: 8px;
+  padding: 14px 16px;
+
+  border: 0;
+  border-radius: 999px;
+
+  background: #25D366;
+  color: #06210F;
+
+  font-size: 15.5px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+/* Disabled until the required order details are complete */
+.whatsapp-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Hover effect for an enabled button */
+.whatsapp-btn:not(:disabled):hover {
+  filter: brightness(1.05);
+}
+
+/* Instructions below the WhatsApp button */
+.whatsapp-hint {
+  margin: 0 0 10px;
+
+  color: var(--ink-soft);
+
+  font-size: 11.5px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* Clear Cart button */
+.clear-cart-btn {
+  display: block;
+
+  width: 100%;
+  padding: 6px;
+
+  border: 0;
+  background: none;
+
+  color: var(--ink-soft);
+  font-size: 12.5px;
+  text-decoration: underline;
+
+  cursor: pointer;
+}
+
+
+/* ==========================================================================
+   21. DESKTOP CART MODAL
+   On screens 700px and wider, the drawer appears in the center.
+   ========================================================================== */
+
+@media (min-width: 700px) {
+
+  .cart-drawer {
+    left: 50%;
+    right: auto;
+    bottom: 50%;
+
+    width: 440px;
+    max-width: calc(100vw - 40px);
+    max-height: 85vh;
+
+    border-radius: var(--r-lg);
+
+    transform: translate(-50%, 50%) scale(0.96);
+    opacity: 0;
+
+    transition:
+      transform 0.25s ease,
+      opacity 0.25s ease;
+  }
+
+  /* Fully visible desktop modal */
+  .cart-drawer.open {
+    transform: translate(-50%, 50%) scale(1);
+    opacity: 1;
+  }
+}
+
+
+/* ==========================================================================
+   22. SMALL MOBILE SCREENS
+   Reduces spacing and button sizes on screens 380px wide or narrower.
+   ========================================================================== */
 
 @media (max-width: 380px) {
-  .cart-fab { padding: 11px 16px; font-size: 13.5px; }
-  .cart-items { padding: 10px 14px; }
-  .cart-footer { padding-left: 14px; padding-right: 14px; }
-  .order-details-box { padding: 13px 12px 12px; }
-  .order-type-btn { font-size: 10.5px; }
+
+  /* Floating cart button */
+  .cart-fab {
+    padding: 11px 16px;
+    font-size: 13.5px;
+  }
+
+  /* Cart item spacing */
+  .cart-items {
+    padding: 10px 14px;
+  }
+
+  /* Checkout footer spacing */
+  .cart-footer {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  /* Order details card */
+  .order-details-box {
+    padding: 13px 12px 12px;
+  }
+
+  /* Delivery/Pickup button text */
+  .order-type-btn {
+    font-size: 10.5px;
+  }
 }
