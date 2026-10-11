@@ -1,149 +1,564 @@
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+  <!-- =========================================================
+       1. PAGE INFORMATION
+       ========================================================= -->
+
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  />
 
   <title>Baraza Restaurant &amp; Cafe — Order Online</title>
-  <meta name="description" content="Order online from Baraza Restaurant &amp; Cafe, Corner of Mtitu &amp; Kalenga Street, Upanga, Dar es Salaam. Delivery or pickup." />
+
+  <meta
+    name="description"
+    content="Order online from Baraza Restaurant &amp; Cafe, Corner of Mtitu &amp; Kalenga Street, Upanga, Dar es Salaam. Delivery or pickup."
+  />
+
+
+  <!-- =========================================================
+       2. FONTS
+       Playfair Display: headings and display text.
+       Poppins: general text and interface elements.
+       ========================================================= -->
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-  <!-- style.css = shared look, style1.css = menu, style2.css = cart/order -->
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+
+  <!-- =========================================================
+       3. STYLESHEETS
+       style.css  = shared website design.
+       style1.css = menu categories and menu item cards.
+       style2.css = cart, checkout fields, and ordering interface.
+
+       Keep this loading order so the shared styles load first.
+       ========================================================= -->
+
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="style1.css" />
   <link rel="stylesheet" href="style2.css" />
+
 </head>
+
 
 <body>
 
+  <!-- =========================================================
+       4. WEBSITE HEADER
+       Contains the restaurant logo, name, tagline, and home link.
+       ========================================================= -->
+
   <header class="site-header">
+
     <div class="header-inner">
+
+      <!-- Restaurant logo -->
       <div class="brand-logo">
-        <img src="logo.jpeg" alt="Baraza Restaurant &amp; Cafe Logo" />
+        <img
+          src="logo.jpeg"
+          alt="Baraza Restaurant &amp; Cafe Logo"
+        />
       </div>
 
+      <!-- Restaurant name and tagline -->
       <div class="brand-copy">
+
         <p class="brand-eyebrow"></p>
-        <h1 class="brand-name">Baraza Restaurant &amp; Cafe</h1>
-        <p class="brand-tagline">A Place to Gather, A Taste to Remember.</p>
+
+        <h1 class="brand-name">
+          Baraza Restaurant &amp; Cafe
+        </h1>
+
+        <p class="brand-tagline">
+          A Place to Gather, A Taste to Remember.
+        </p>
+
       </div>
 
-      <a href="index.html" class="home-button" aria-label="Go back to home page">🏠 Home</a>
+      <!-- Link back to the homepage -->
+      <a
+        href="index.html"
+        class="home-button"
+        aria-label="Go back to home page"
+      >
+        🏠 Home
+      </a>
+
     </div>
+
   </header>
 
-  <nav class="category-nav" aria-label="Menu categories">
-    <div class="category-nav-scroll" id="category-nav" role="tablist"></div>
+
+  <!-- =========================================================
+       5. MENU CATEGORY NAVIGATION
+       script2.js creates the category buttons dynamically.
+       ========================================================= -->
+
+  <nav
+    class="category-nav"
+    aria-label="Menu categories"
+  >
+
+    <div
+      class="category-nav-scroll"
+      id="category-nav"
+      role="tablist"
+    ></div>
+
   </nav>
 
-  <!-- Category sections are rendered here by script2.js -->
-  <main id="menu-content" class="menu-content"></main>
+
+  <!-- =========================================================
+       6. MENU CONTENT
+       script2.js inserts the menu categories and items here.
+       ========================================================= -->
+
+  <main
+    id="menu-content"
+    class="menu-content"
+  ></main>
+
+
+  <!-- =========================================================
+       7. WEBSITE FOOTER
+       The current year is inserted by JavaScript.
+       ========================================================= -->
 
   <footer class="site-footer">
+
     <p class="footer-copyright">
-      © <span id="year"></span> Baraza Restaurant &amp; Cafe. All prices in Tanzanian Shillings.
+      ©
+      <span id="year"></span>
+      Baraza Restaurant &amp; Cafe.
+      All prices in Tanzanian Shillings.
     </p>
+
   </footer>
 
-  <!-- ===================== CART: FLOATING BUTTON ===================== -->
-  <button id="cart-toggle-btn" class="cart-fab" type="button" aria-label="Open cart, 0 items">
-    🛒 Cart <span id="cart-count" class="cart-fab-count" aria-hidden="true">0</span>
+
+  <!-- =========================================================
+       8. FLOATING CART BUTTON
+       Customers use this button to open their shopping cart.
+       The item count is updated by script2.js.
+       ========================================================= -->
+
+  <button
+    id="cart-toggle-btn"
+    class="cart-fab"
+    type="button"
+    aria-label="Open cart, 0 items"
+  >
+    🛒 Cart
+
+    <span
+      id="cart-count"
+      class="cart-fab-count"
+      aria-hidden="true"
+    >
+      0
+    </span>
+
   </button>
 
-  <div id="cart-overlay" class="cart-overlay" hidden></div>
 
-  <!-- ===================== CART: DRAWER ===================== -->
-  <aside id="cart-drawer" class="cart-drawer" role="dialog" aria-modal="true" aria-labelledby="cart-drawer-title" hidden>
+  <!-- =========================================================
+       9. CART BACKGROUND OVERLAY
+       Displayed behind the cart drawer when it is open.
+       ========================================================= -->
 
+  <div
+    id="cart-overlay"
+    class="cart-overlay"
+    hidden
+  ></div>
+
+
+  <!-- =========================================================
+       10. CART DRAWER
+       Contains selected items, customer details, order options,
+       price totals, and the WhatsApp order button.
+       ========================================================= -->
+
+  <aside
+    id="cart-drawer"
+    class="cart-drawer"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="cart-drawer-title"
+    hidden
+  >
+
+    <!-- CART HEADER -->
     <div class="cart-drawer-header">
-      <h2 id="cart-drawer-title">🛒 Your Order</h2>
-      <button id="cart-close-btn" class="cart-close-btn" type="button" aria-label="Close cart">✕</button>
+
+      <h2 id="cart-drawer-title">
+        🛒 Your Order
+      </h2>
+
+      <button
+        id="cart-close-btn"
+        class="cart-close-btn"
+        type="button"
+        aria-label="Close cart"
+      >
+        ✕
+      </button>
+
     </div>
+
+
+    <!-- =======================================================
+         11. CART BODY
+         Displays the selected menu items and checkout details.
+         ======================================================= -->
 
     <div class="cart-body">
 
-      <div id="cart-items" class="cart-items"></div>
 
-      <div id="cart-empty" class="cart-empty" hidden>
+      <!-- SELECTED ITEMS
+           script2.js displays the customer's chosen items here. -->
+
+      <div
+        id="cart-items"
+        class="cart-items"
+      ></div>
+
+
+      <!-- EMPTY CART MESSAGE
+           Shown when the customer has not selected any items. -->
+
+      <div
+        id="cart-empty"
+        class="cart-empty"
+        hidden
+      >
+
         <p>Your cart is empty</p>
-        <button id="cart-browse-btn" class="cart-browse-btn" type="button">Browse Menu</button>
+
+        <button
+          id="cart-browse-btn"
+          class="cart-browse-btn"
+          type="button"
+        >
+          Browse Menu
+        </button>
+
       </div>
 
-      <div id="cart-footer" class="cart-footer" hidden>
+
+      <!-- =====================================================
+           12. CHECKOUT FOOTER
+           Contains order type, customer details, totals,
+           and checkout buttons.
+
+           Hidden when the cart is empty.
+           ===================================================== -->
+
+      <div
+        id="cart-footer"
+        class="cart-footer"
+        hidden
+      >
 
         <div class="order-details-box">
 
-          <!-- ORDER TYPE: Delivery / Pickup -->
+
+          <!-- =================================================
+               12A. ORDER TYPE
+               Customer chooses Delivery or Pickup.
+               ================================================= -->
+
           <div class="order-type-group">
+
             <p class="order-type-label">
-              <span class="order-type-label-dot" aria-hidden="true"></span>
+
+              <span
+                class="order-type-label-dot"
+                aria-hidden="true"
+              ></span>
+
               How would you like your order?
+
             </p>
 
-            <div class="order-type-options" id="order-type-options" role="radiogroup" aria-label="Order type">
-              <button type="button" class="order-type-btn" data-type="delivery" role="radio" aria-checked="false">
-                <span class="order-type-icon" aria-hidden="true">🛵</span>
+
+            <!-- Delivery and pickup selection buttons -->
+            <div
+              class="order-type-options"
+              id="order-type-options"
+              role="radiogroup"
+              aria-label="Order type"
+            >
+
+              <!-- Delivery option -->
+              <button
+                type="button"
+                class="order-type-btn"
+                data-type="delivery"
+                role="radio"
+                aria-checked="false"
+              >
+
+                <span
+                  class="order-type-icon"
+                  aria-hidden="true"
+                >
+                  🛵
+                </span>
+
                 <span>Delivery</span>
+
               </button>
-              <button type="button" class="order-type-btn" data-type="pickup" role="radio" aria-checked="false">
-                <span class="order-type-icon" aria-hidden="true">🥡</span>
+
+
+              <!-- Pickup option -->
+              <button
+                type="button"
+                class="order-type-btn"
+                data-type="pickup"
+                role="radio"
+                aria-checked="false"
+              >
+
+                <span
+                  class="order-type-icon"
+                  aria-hidden="true"
+                >
+                  🥡
+                </span>
+
                 <span>Pickup</span>
+
               </button>
+
             </div>
 
-            <p class="order-type-hint" id="order-type-hint">Select Delivery or Pickup to continue.</p>
+
+            <!-- Instruction shown before an order type is selected -->
+            <p
+              class="order-type-hint"
+              id="order-type-hint"
+            >
+              Select Delivery or Pickup to continue.
+            </p>
+
           </div>
 
-          <div class="order-details-divider" aria-hidden="true"></div>
 
-          <!-- CUSTOMER FIELDS -->
-          <div class="cart-customer-fields" id="cart-customer-fields" hidden>
+          <!-- Visual separator between order type and customer details -->
+          <div
+            class="order-details-divider"
+            aria-hidden="true"
+          ></div>
 
-            <input type="text" id="customer-name" class="cart-input" placeholder="Your name *" aria-label="Your name (required)" autocomplete="name" />
-            <input type="tel" id="customer-contact" class="cart-input" placeholder="Phone number *" aria-label="Phone number (required)" autocomplete="tel" />
 
-            <!-- DELIVERY only -->
-            <div class="cart-group" id="delivery-fields" hidden>
-              <input type="text" id="customer-area" class="cart-input" placeholder="Your area *" aria-label="Your area (required)" />
-              <input type="text" id="customer-address" class="cart-input" placeholder="Delivery address *" aria-label="Delivery address (required)" autocomplete="street-address" />
+          <!-- =================================================
+               12B. CUSTOMER INFORMATION
+               The fields become visible when appropriate.
+               ================================================= -->
+
+          <div
+            class="cart-customer-fields"
+            id="cart-customer-fields"
+            hidden
+          >
+
+            <!-- Customer name -->
+            <input
+              type="text"
+              id="customer-name"
+              class="cart-input"
+              placeholder="Your name *"
+              aria-label="Your name (required)"
+              autocomplete="name"
+            />
+
+
+            <!-- Customer phone number -->
+            <input
+              type="tel"
+              id="customer-contact"
+              class="cart-input"
+              placeholder="Phone number *"
+              aria-label="Phone number (required)"
+              autocomplete="tel"
+            />
+
+
+            <!-- ===============================================
+                 12C. DELIVERY DETAILS
+                 Only relevant when Delivery is selected.
+                 =============================================== -->
+
+            <div
+              class="cart-group"
+              id="delivery-fields"
+              hidden
+            >
+
+              <!-- Customer's area -->
+              <input
+                type="text"
+                id="customer-area"
+                class="cart-input"
+                placeholder="Your area *"
+                aria-label="Your area (required)"
+              />
+
+
+              <!-- Customer's delivery address -->
+              <input
+                type="text"
+                id="customer-address"
+                class="cart-input"
+                placeholder="Delivery address *"
+                aria-label="Delivery address (required)"
+                autocomplete="street-address"
+              />
+
             </div>
 
-            <!-- ADDITIONAL NOTE: both options -->
+
+            <!-- ===============================================
+                 12D. OPTIONAL ORDER NOTES
+                 Available for both Delivery and Pickup.
+                 =============================================== -->
+
             <div class="cart-group">
-              <label class="cart-input-label" for="customer-notes">Additional note (optional)</label>
-              <textarea id="customer-notes" class="cart-input cart-textarea" rows="3" placeholder="Tell us how you would like your order..."></textarea>
+
+              <label
+                class="cart-input-label"
+                for="customer-notes"
+              >
+                Additional note (optional)
+              </label>
+
+              <textarea
+                id="customer-notes"
+                class="cart-input cart-textarea"
+                rows="3"
+                placeholder="Tell us how you would like your order..."
+              ></textarea>
+
             </div>
 
           </div>
+
         </div>
 
-        <!-- TOTALS -->
+
+        <!-- ===================================================
+             13. ORDER PRICE SUMMARY
+             JavaScript updates these amounts as the cart changes.
+             =================================================== -->
+
         <div class="cart-total-breakdown">
+
+          <!-- Total price of the selected food -->
           <div class="cart-total-line">
+
             <span>Food Total</span>
-            <span id="cart-food-total-value">TSh 0/=</span>
+
+            <span id="cart-food-total-value">
+              TSh 0/=
+            </span>
+
           </div>
-          <div class="cart-total-line" id="cart-delivery-line" hidden>
+
+
+          <!-- Delivery fee; visibility depends on order type -->
+          <div
+            class="cart-total-line"
+            id="cart-delivery-line"
+            hidden
+          >
+
             <span>Delivery Fee</span>
-            <span id="cart-delivery-fee-value">TSh 0/=</span>
+
+            <span id="cart-delivery-fee-value">
+              TSh 0/=
+            </span>
+
           </div>
+
+
+          <!-- Final amount payable -->
           <div class="cart-total-line cart-grand-total">
+
             <span>Total</span>
-            <span id="cart-total-value">TSh 0/=</span>
+
+            <span id="cart-total-value">
+              TSh 0/=
+            </span>
+
           </div>
+
         </div>
 
-        <button id="whatsapp-order-btn" class="whatsapp-btn" type="button" disabled>📲 Order via WhatsApp</button>
-        <p class="whatsapp-hint">This opens WhatsApp with your order filled in — tap Send there to confirm it.</p>
-        <button id="clear-cart-btn" class="clear-cart-btn" type="button">Clear Cart</button>
+
+        <!-- ===================================================
+             14. CHECKOUT ACTIONS
+             =================================================== -->
+
+        <!-- Sends the order details to WhatsApp -->
+        <button
+          id="whatsapp-order-btn"
+          class="whatsapp-btn"
+          type="button"
+          disabled
+        >
+          📲 Order via WhatsApp
+        </button>
+
+        <p class="whatsapp-hint">
+          This opens WhatsApp with your order filled in —
+          tap Send there to confirm it.
+        </p>
+
+
+        <!-- Removes all selected items from the cart -->
+        <button
+          id="clear-cart-btn"
+          class="clear-cart-btn"
+          type="button"
+        >
+          Clear Cart
+        </button>
 
       </div>
+
     </div>
+
   </aside>
 
+
+  <!-- =========================================================
+       15. JAVASCRIPT
+       Loads the menu, manages the cart, handles order selection,
+       calculates totals, and prepares WhatsApp orders.
+
+       Keep this script after the HTML elements it uses.
+       ========================================================= -->
+
   <script src="script2.js"></script>
+
 </body>
+
 </html>
