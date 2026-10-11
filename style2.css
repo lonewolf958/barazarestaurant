@@ -138,7 +138,7 @@ body.cart-open { overflow: hidden; }
   font-family: var(--font-body); font-size: 13.5px;
 }
 .cart-input:focus-visible { outline: 3px solid var(--red); outline-offset: 1px; }
-.cart-textarea { min-height: 82px; resize: vertical; line-height: 1.45; }
+.cart-textarea { min-height: 82px; resize: none; overflow: hidden; line-height: 1.45; }
 .cart-textarea::placeholder { color: var(--ink-soft); opacity: 0.8; }
 
 /* ---------- Totals + WhatsApp ---------- */
