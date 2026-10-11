@@ -1,52 +1,179 @@
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+  <!-- =========================================================
+       1. PAGE CONFIGURATION
+       ========================================================= -->
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
 
   <title>Baraza Restaurant &amp; Cafe — Digital Menu</title>
-  <meta name="description" content="Digital menu for Baraza Restaurant &amp; Cafe, Corner of Mtitu &amp; Kalenga Street, Upanga, Dar es Salaam. A Place to Gather, A Taste to Remember." />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <meta
+    name="description"
+    content="Digital menu for Baraza Restaurant &amp; Cafe, Corner of Mtitu &amp; Kalenga Street, Upanga, Dar es Salaam. A Place to Gather, A Taste to Remember."
+  >
 
-  <!-- style.css = shared look (same as every page), style1.css = menu -->
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="style1.css" />
+
+  <!-- =========================================================
+       2. GOOGLE FONTS
+       Heading font: Playfair Display
+       Body font: Poppins
+       ========================================================= -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+
+  <!-- =========================================================
+       3. STYLESHEETS
+
+       style.css  = Shared website design
+       style1.css = Digital table menu layout and styling
+
+       Keep style.css before style1.css so menu-specific styles
+       can override shared styles when necessary.
+       ========================================================= -->
+
+  <link rel="stylesheet" href="style.css">
+
+  <link rel="stylesheet" href="style1.css">
+
 </head>
+
 
 <body>
 
+  <!-- =========================================================
+       4. WEBSITE HEADER
+
+       Displays the restaurant logo, name, tagline, and a link
+       back to the homepage.
+       ========================================================= -->
+
   <header class="site-header">
+
     <div class="header-inner">
+
+      <!-- Restaurant Logo -->
       <div class="brand-logo">
-        <img src="logo.jpeg" alt="Baraza Restaurant &amp; Cafe Logo" />
+        <img
+          src="logo.jpeg"
+          alt="Baraza Restaurant &amp; Cafe Logo"
+        >
       </div>
 
+      <!-- Restaurant Name and Tagline -->
       <div class="brand-copy">
+
         <p class="brand-eyebrow"></p>
-        <h1 class="brand-name">Baraza Restaurant &amp; Cafe</h1>
-        <p class="brand-tagline">A Place to Gather, A Taste to Remember.</p>
+
+        <h1 class="brand-name">
+          Baraza Restaurant &amp; Cafe
+        </h1>
+
+        <p class="brand-tagline">
+          A Place to Gather, A Taste to Remember.
+        </p>
+
       </div>
 
-      <a href="index.html" class="home-button" aria-label="Go back to home page">🏠 Home</a>
+      <!-- Return to Homepage -->
+      <a
+        href="index.html"
+        class="home-button"
+        aria-label="Go back to home page"
+      >
+        🏠 Home
+      </a>
+
     </div>
+
   </header>
 
-  <nav class="category-nav" aria-label="Menu categories">
-    <div class="category-nav-scroll" id="category-nav" role="tablist"></div>
+
+  <!-- =========================================================
+       5. MENU CATEGORY NAVIGATION
+
+       script1.js dynamically adds menu category buttons here.
+       The navigation can be used to move between menu categories.
+       ========================================================= -->
+
+  <nav
+    class="category-nav"
+    aria-label="Menu categories"
+  >
+
+    <div
+      class="category-nav-scroll"
+      id="category-nav"
+      role="tablist"
+    ></div>
+
   </nav>
 
-  <!-- Category sections are rendered here by script1.js -->
-  <main id="menu-content" class="menu-content"></main>
+
+  <!-- =========================================================
+       6. DIGITAL MENU CONTENT
+
+       script1.js dynamically generates the menu categories,
+       meal items, descriptions, and prices inside this element.
+
+       Edit the menu data in script1.js rather than adding menu
+       items directly to this empty HTML container, unless the
+       JavaScript implementation is changed.
+       ========================================================= -->
+
+  <main
+    id="menu-content"
+    class="menu-content"
+  ></main>
+
+
+  <!-- =========================================================
+       7. WEBSITE FOOTER
+
+       Displays the copyright year and currency information.
+       The year is populated by script1.js.
+       ========================================================= -->
 
   <footer class="site-footer">
+
     <p class="footer-copyright">
-      © <span id="year"></span> Baraza Restaurant &amp; Cafe. All prices in Tanzanian Shillings.
+      © <span id="year"></span> Baraza Restaurant &amp; Cafe.
+      All prices in Tanzanian Shillings.
     </p>
+
   </footer>
 
+
+  <!-- =========================================================
+       8. DIGITAL MENU JAVASCRIPT
+
+       script1.js handles menu rendering, category navigation,
+       and any other functionality implemented for this page.
+       ========================================================= -->
+
   <script src="script1.js"></script>
+
 </body>
+
 </html>
