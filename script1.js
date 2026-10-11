@@ -1,4 +1,44 @@
 
+/* ==========================================================================
+   BARAZA RESTAURANT & CAFE — DIGITAL MENU
+   File: script1.js
+
+   PURPOSE:
+   1. Store menu categories, meal names, descriptions, and prices.
+   2. Generate the category navigation buttons.
+   3. Display menu categories and items on the page.
+   4. Highlight the active category while scrolling.
+   5. Automatically update the footer copyright year.
+
+   RELATED FILES:
+   - index1.html: Digital menu page
+   - style.css: Shared website styles
+   - style1.css: Digital menu styles
+
+   HOW TO UPDATE THE MENU:
+   Edit MENU_DATA below. Keep category IDs unique and consistent.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. MENU DATA
+   This is the main source of menu content.
+
+   Each category contains:
+   - id: Unique identifier used for navigation.
+   - name: Category name displayed on the page.
+   - items: Meals or drinks belonging to the category.
+
+   Each item can contain:
+   - name: Item name.
+   - price: Price in Tanzanian Shillings.
+   - desc: Optional description.
+
+   Some rendering logic also supports:
+   - cat.note: Optional category note.
+   - cat.sizeLabels, item.small, item.large: Optional dual-size pricing.
+   ========================================================================== */
+
 const MENU_DATA = [
   {
     id: "bbq-combos",
@@ -16,6 +56,7 @@ const MENU_DATA = [
       }
     ]
   },
+
   {
     id: "starters",
     name: "Starters",
@@ -41,41 +82,113 @@ const MENU_DATA = [
       { name: "Chilli Paneer", price: 14000 }
     ]
   },
+
   {
     id: "kuku-nusu",
     name: "Kuku Nusu",
     items: [
-      { name: "Sekela Chicken", price: 10000, desc: "Served with chips, rice, noodles or naan." },
-      { name: "Gajjar Chicken", price: 10000, desc: "Served with chips, rice, noodles or naan." },
-      { name: "Lemon Chicken", price: 10000, desc: "Served with chips, rice, noodles or naan." },
-      { name: "Choma Chicken", price: 10000, desc: "Served with chips, rice, noodles or naan." },
-      { name: "Schezwan Chicken", price: 15000, desc: "Served with chips, rice, noodles or naan." },
-      { name: "Extra Hot Chicken", price: 15000, desc: "Served with chips, rice, noodles or naan." }
+      {
+        name: "Sekela Chicken",
+        price: 10000,
+        desc: "Served with chips, rice, noodles or naan."
+      },
+      {
+        name: "Gajjar Chicken",
+        price: 10000,
+        desc: "Served with chips, rice, noodles or naan."
+      },
+      {
+        name: "Lemon Chicken",
+        price: 10000,
+        desc: "Served with chips, rice, noodles or naan."
+      },
+      {
+        name: "Choma Chicken",
+        price: 10000,
+        desc: "Served with chips, rice, noodles or naan."
+      },
+      {
+        name: "Schezwan Chicken",
+        price: 15000,
+        desc: "Served with chips, rice, noodles or naan."
+      },
+      {
+        name: "Extra Hot Chicken",
+        price: 15000,
+        desc: "Served with chips, rice, noodles or naan."
+      }
     ]
   },
+
   {
     id: "chicken-mzinga",
     name: "Chicken Mzinga",
     items: [
-      { name: "Pilipili Chicken (Fried or BBQ)", price: 24000, desc: "Served with chips, rice, noodles or naan." },
-      { name: "Peri-Peri Chicken (Fried or BBQ)", price: 24000, desc: "Served with chips, rice, noodles or naan." },
-      { name: "Crunchy Chicken (Fried)", price: 24000, desc: "Served with chips, rice, noodles or naan." },
-      { name: "Chicken Poussin (Fried)", price: 24000, desc: "Served with chips, rice, noodles or naan." },
-      { name: "Chilly Milly", price: 26000, desc: "Served with chips, rice, noodles or naan." }
+      {
+        name: "Pilipili Chicken (Fried or BBQ)",
+        price: 24000,
+        desc: "Served with chips, rice, noodles or naan."
+      },
+      {
+        name: "Peri-Peri Chicken (Fried or BBQ)",
+        price: 24000,
+        desc: "Served with chips, rice, noodles or naan."
+      },
+      {
+        name: "Crunchy Chicken (Fried)",
+        price: 24000,
+        desc: "Served with chips, rice, noodles or naan."
+      },
+      {
+        name: "Chicken Poussin (Fried)",
+        price: 24000,
+        desc: "Served with chips, rice, noodles or naan."
+      },
+      {
+        name: "Chilly Milly",
+        price: 26000,
+        desc: "Served with chips, rice, noodles or naan."
+      }
     ]
   },
+
   {
     id: "seafood",
     name: "Seafood",
     items: [
-      { name: "Fish Boti (4 Sticks Per Plate)", price: 18000, desc: "Served with chips, rice, noodles or naan." },
-      { name: "Fish Fillet (Fried or BBQ)", price: 24000, desc: "Served with chips, rice, noodles or naan." },
-      { name: "Masala Prawns (Fried or BBQ)", price: 24000, desc: "Served with chips, rice, noodles or naan." },
-      { name: "Garlic Butter Prawns (Fried or BBQ)", price: 24000, desc: "Served with chips, rice, noodles or naan." },
-      { name: "Garlic Butter Fish (Fried)", price: 24000, desc: "Served with chips, rice, noodles or naan." },
-      { name: "Schezwan Prawns (Fried)", price: 24000, desc: "Served with chips, rice, noodles or naan." }
+      {
+        name: "Fish Boti (4 Sticks Per Plate)",
+        price: 18000,
+        desc: "Served with chips, rice, noodles or naan."
+      },
+      {
+        name: "Fish Fillet (Fried or BBQ)",
+        price: 24000,
+        desc: "Served with chips, rice, noodles or naan."
+      },
+      {
+        name: "Masala Prawns (Fried or BBQ)",
+        price: 24000,
+        desc: "Served with chips, rice, noodles or naan."
+      },
+      {
+        name: "Garlic Butter Prawns (Fried or BBQ)",
+        price: 24000,
+        desc: "Served with chips, rice, noodles or naan."
+      },
+      {
+        name: "Garlic Butter Fish (Fried)",
+        price: 24000,
+        desc: "Served with chips, rice, noodles or naan."
+      },
+      {
+        name: "Schezwan Prawns (Fried)",
+        price: 24000,
+        desc: "Served with chips, rice, noodles or naan."
+      }
     ]
   },
+
   {
     id: "chips",
     name: "Chips",
@@ -88,6 +201,7 @@ const MENU_DATA = [
       { name: "Baraza Special Chips", price: 8000 }
     ]
   },
+
   {
     id: "naan",
     name: "Naan",
@@ -98,6 +212,7 @@ const MENU_DATA = [
       { name: "Chilly Naan", price: 3000 }
     ]
   },
+
   {
     id: "noodles",
     name: "Noodles",
@@ -109,6 +224,7 @@ const MENU_DATA = [
       { name: "Fish Hakka Noodles", price: 15000 }
     ]
   },
+
   {
     id: "rice",
     name: "Rice",
@@ -120,9 +236,13 @@ const MENU_DATA = [
       { name: "Beef Fried Rice", price: 10000 },
       { name: "Prawns Fried Rice", price: 15000 },
       { name: "Fish Fried Rice", price: 13000 },
-      { name: "Schezwan Fried Rice (Chicken, Beef or Veg)", price: 10000 }
+      {
+        name: "Schezwan Fried Rice (Chicken, Beef or Veg)",
+        price: 10000
+      }
     ]
   },
+
   {
     id: "drinks",
     name: "Drinks",
@@ -137,149 +257,351 @@ const MENU_DATA = [
   }
 ];
 
-/* ---------- Helpers ---------- */
 
-function formatPrice(n) {
-  return "TSh " + n.toLocaleString("en-US") + "/=";
+/* ==========================================================================
+   2. HELPER FUNCTIONS
+   Small reusable functions used throughout the script.
+   ========================================================================== */
+
+
+/**
+ * Format a number as a Tanzanian Shilling price.
+ *
+ * Example:
+ * formatPrice(15000) returns "TSh 15,000/="
+ *
+ * To change how prices appear throughout the menu, edit this function.
+ */
+function formatPrice(amount) {
+  return "TSh " + amount.toLocaleString("en-US") + "/=";
 }
 
+
+/**
+ * Create an HTML element.
+ *
+ * @param {string} tag       HTML tag name, such as "div" or "h2".
+ * @param {string} className Optional CSS class.
+ * @param {string} html      Optional HTML content.
+ * @returns {HTMLElement}
+ *
+ * Note: The html argument is interpreted as HTML.
+ * Use textContent instead when displaying untrusted text.
+ */
 function el(tag, className, html) {
-  const e = document.createElement(tag);
-  if (className) e.className = className;
-  if (html !== undefined) e.innerHTML = html;
-  return e;
+  const element = document.createElement(tag);
+
+  if (className) {
+    element.className = className;
+  }
+
+  if (html !== undefined) {
+    element.innerHTML = html;
+  }
+
+  return element;
 }
 
-/* ---------- Render category navigation ---------- */
+
+/* ==========================================================================
+   3. CATEGORY NAVIGATION
+   Creates one navigation button for every menu category.
+   Clicking a button scrolls to its corresponding section.
+   ========================================================================== */
 
 function renderNav() {
   const nav = document.getElementById("category-nav");
-  MENU_DATA.forEach((cat) => {
-    const btn = el("button", "nav-pill");
-    btn.type = "button";
-    btn.textContent = cat.name;
-    btn.dataset.target = cat.id;
-    btn.setAttribute("role", "tab");
-    btn.setAttribute("aria-selected", "false");
-    btn.addEventListener("click", () => {
-      const target = document.getElementById(cat.id);
-      if (!target) return;
-      const headerOffset = document.querySelector(".category-nav").offsetHeight + 12;
-      const top = target.getBoundingClientRect().top + window.scrollY - headerOffset;
-      window.scrollTo({ top, behavior: "smooth" });
+  const navContainer = document.querySelector(".category-nav");
+
+  // Stop if the required HTML elements are missing.
+  if (!nav || !navContainer) {
+    return;
+  }
+
+  MENU_DATA.forEach((category) => {
+    const button = el("button", "nav-pill");
+
+    button.type = "button";
+    button.textContent = category.name;
+    button.dataset.target = category.id;
+
+    // Accessibility attributes for category navigation.
+    button.setAttribute("role", "tab");
+    button.setAttribute("aria-selected", "false");
+
+    // Scroll to the selected category.
+    button.addEventListener("click", () => {
+      const target = document.getElementById(category.id);
+
+      if (!target) {
+        return;
+      }
+
+      // Account for the category navigation height.
+      const headerOffset = navContainer.offsetHeight + 12;
+
+      const targetPosition =
+        target.getBoundingClientRect().top +
+        window.scrollY -
+        headerOffset;
+
+      window.scrollTo({
+        top: targetPosition,
+        behavior: "smooth"
+      });
     });
-    nav.appendChild(btn);
+
+    nav.appendChild(button);
   });
 }
 
-/* ---------- Render menu sections ---------- */
+
+/* ==========================================================================
+   4. MENU RENDERING
+   Generates all menu categories, meal names, descriptions, and prices.
+
+   The HTML elements are inserted into:
+   <main id="menu-content"></main>
+
+   The function supports standard prices and optional two-size prices.
+   ========================================================================== */
 
 function renderMenu() {
   const main = document.getElementById("menu-content");
 
-  MENU_DATA.forEach((cat) => {
-    const section = el("section", "category-section");
-    section.id = cat.id;
-    section.setAttribute("aria-labelledby", cat.id + "-heading");
+  // Stop if the menu container does not exist.
+  if (!main) {
+    return;
+  }
 
+  MENU_DATA.forEach((category) => {
+
+    // Create the category section.
+    const section = el("section", "category-section");
+
+    section.id = category.id;
+    section.setAttribute(
+      "aria-labelledby",
+      category.id + "-heading"
+    );
+
+    // Create the category heading.
     const heading = el("h2", "category-heading");
-    heading.id = cat.id + "-heading";
-    heading.textContent = cat.name;
+
+    heading.id = category.id + "-heading";
+    heading.textContent = category.name;
+
     section.appendChild(heading);
 
-    if (cat.note) {
-      section.appendChild(el("p", "category-note", cat.note));
+    // Display an optional category note.
+    if (category.note) {
+      section.appendChild(
+        el("p", "category-note", category.note)
+      );
     }
 
+    // Container for all items in this category.
     const list = el("div", "item-list");
 
-    cat.items.forEach((item) => {
+    category.items.forEach((item) => {
+
+      // Create an individual menu item.
       const row = el("article", "menu-item");
 
+      // Meal name and optional description.
       const info = el("div", "menu-item-info");
-      info.appendChild(el("h3", "menu-item-name", item.name));
+
+      const itemName = el("h3", "menu-item-name");
+      itemName.textContent = item.name;
+
+      info.appendChild(itemName);
+
       if (item.desc) {
-        info.appendChild(el("p", "menu-item-desc", item.desc));
+        const description = el("p", "menu-item-desc");
+        description.textContent = item.desc;
+
+        info.appendChild(description);
       }
+
       row.appendChild(info);
 
-      if (cat.sizeLabels) {
-        const priceWrap = el("div", "menu-item-price menu-item-price--dual");
-        const small = el("div", "price-option");
-        small.innerHTML =
-          '<span class="price-option-label">' +
-          cat.sizeLabels[0] +
-          '</span><span class="price-option-value">' +
-          formatPrice(item.small) +
-          "</span>";
-        const large = el("div", "price-option");
-        large.innerHTML =
-          '<span class="price-option-label">' +
-          cat.sizeLabels[1] +
-          '</span><span class="price-option-value">' +
-          formatPrice(item.large) +
-          "</span>";
-        priceWrap.appendChild(small);
-        priceWrap.appendChild(large);
+
+      // Display two prices if the category uses size options.
+      if (category.sizeLabels) {
+
+        const priceWrap = el(
+          "div",
+          "menu-item-price menu-item-price--dual"
+        );
+
+        // First size and price.
+        const smallPrice = el("div", "price-option");
+
+        const smallLabel = el("span", "price-option-label");
+        smallLabel.textContent = category.sizeLabels[0];
+
+        const smallValue = el("span", "price-option-value");
+        smallValue.textContent = formatPrice(item.small);
+
+        smallPrice.appendChild(smallLabel);
+        smallPrice.appendChild(smallValue);
+
+
+        // Second size and price.
+        const largePrice = el("div", "price-option");
+
+        const largeLabel = el("span", "price-option-label");
+        largeLabel.textContent = category.sizeLabels[1];
+
+        const largeValue = el("span", "price-option-value");
+        largeValue.textContent = formatPrice(item.large);
+
+        largePrice.appendChild(largeLabel);
+        largePrice.appendChild(largeValue);
+
+
+        // Add both price options to the menu item.
+        priceWrap.appendChild(smallPrice);
+        priceWrap.appendChild(largePrice);
+
         row.appendChild(priceWrap);
+
       } else {
-        const price = el("div", "menu-item-price", formatPrice(item.price));
+
+        // Standard single price.
+        const price = el("div", "menu-item-price");
+        price.textContent = formatPrice(item.price);
+
         row.appendChild(price);
+
       }
 
       list.appendChild(row);
     });
 
+    // Add the item list to its category.
     section.appendChild(list);
+
+    // Add the complete category to the menu page.
     main.appendChild(section);
   });
 }
 
-/* ---------- Active category highlighting on scroll ---------- */
+
+/* ==========================================================================
+   5. ACTIVE CATEGORY TRACKING
+   Highlights the category button corresponding to the section currently
+   being viewed while the customer scrolls through the menu.
+   ========================================================================== */
 
 function setupActiveTracking() {
-  const pills = Array.from(document.querySelectorAll(".nav-pill"));
-  const sections = MENU_DATA.map((c) => document.getElementById(c.id));
-  const navEl = document.querySelector(".category-nav");
+  const pills = Array.from(
+    document.querySelectorAll(".nav-pill")
+  );
 
-  function setActive(id) {
-    pills.forEach((p) => {
-      const isActive = p.dataset.target === id;
-      p.classList.toggle("active", isActive);
-      p.setAttribute("aria-selected", isActive ? "true" : "false");
+  const sections = MENU_DATA.map((category) =>
+    document.getElementById(category.id)
+  );
+
+  const navElement = document.querySelector(".category-nav");
+
+  // Stop if there are no navigation buttons or the navigation is missing.
+  if (!pills.length || !navElement) {
+    return;
+  }
+
+
+  /**
+   * Update the active category button.
+   *
+   * @param {string} categoryId The ID of the active category section.
+   */
+  function setActive(categoryId) {
+    pills.forEach((pill) => {
+
+      const isActive = pill.dataset.target === categoryId;
+
+      pill.classList.toggle("active", isActive);
+
+      pill.setAttribute(
+        "aria-selected",
+        isActive ? "true" : "false"
+      );
+
+      // Keep the active category button visible in the navigation.
       if (isActive) {
-        p.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+        pill.scrollIntoView({
+          behavior: "smooth",
+          inline: "center",
+          block: "nearest"
+        });
       }
+
     });
   }
 
+
+  // Observe menu sections as they enter the viewport.
   const observer = new IntersectionObserver(
     (entries) => {
+
       entries.forEach((entry) => {
+
         if (entry.isIntersecting) {
           setActive(entry.target.id);
         }
+
       });
+
     },
     {
       root: null,
-      rootMargin: `-${navEl.offsetHeight + 20}px 0px -70% 0px`,
-      threshold: 0,
+
+      // Account for the category navigation when tracking sections.
+      rootMargin:
+        `-${navElement.offsetHeight + 20}px 0px -70% 0px`,
+
+      threshold: 0
     }
   );
 
-  sections.forEach((s) => s && observer.observe(s));
 
-  // Set initial active state
-  if (sections[0]) setActive(sections[0].id);
+  // Start observing all existing menu sections.
+  sections.forEach((section) => {
+    if (section) {
+      observer.observe(section);
+    }
+  });
+
+
+  // Highlight the first category when the page loads.
+  if (sections[0]) {
+    setActive(sections[0].id);
+  }
 }
 
-/* ---------- Init ---------- */
+
+/* ==========================================================================
+   6. INITIALIZE THE DIGITAL MENU
+   Runs after the HTML document has loaded.
+   ========================================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
+
+  // Generate category navigation buttons.
   renderNav();
+
+  // Generate menu categories and items.
   renderMenu();
+
+  // Enable automatic active-category highlighting.
   setupActiveTracking();
 
-  document.getElementById("year").textContent = new Date().getFullYear();
+  // Update the copyright year.
+  const yearElement = document.getElementById("year");
+
+  if (yearElement) {
+    yearElement.textContent = new Date().getFullYear();
+  }
+
 });
