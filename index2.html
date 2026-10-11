@@ -1,4 +1,4 @@
-[<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -107,14 +107,7 @@
 
             <!-- DELIVERY only -->
             <div class="cart-group" id="delivery-fields" hidden>
-              <label class="cart-input-label" for="delivery-area">Delivery area *</label>
-              <select id="delivery-area" class="cart-input"></select>
-
-              <div class="cart-group" id="other-area-wrap" hidden>
-                <label class="cart-input-label" for="customer-other-area">Enter your area *</label>
-                <input type="text" id="customer-other-area" class="cart-input" placeholder="Enter your area *" />
-              </div>
-
+              <input type="text" id="customer-area" class="cart-input" placeholder="Your area *" aria-label="Your area (required)" />
               <input type="text" id="customer-address" class="cart-input" placeholder="Delivery address *" aria-label="Delivery address (required)" autocomplete="street-address" />
             </div>
 
