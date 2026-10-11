@@ -1,41 +1,90 @@
+
 /* ==========================================================================
-   BARAZA RESTAURANT & CAFE — SHARED STYLESHEET
-   Used by ALL THREE pages (index.html, index1.html, index2.html) so they
-   look like one brand. Palette taken from the old Baraza site (red #af2828)
-   with a warm gold accent on a cream background.
+   BARAZA RESTAURANT & CAFE
+   File: style.css
+
+   PURPOSE:
+   Shared stylesheet for:
+   1. index.html  — Homepage
+   2. index1.html — Table menu
+   3. index2.html — Online ordering
+
+   DESIGN:
+   - Primary color: Red
+   - Accent color: Gold
+   - Background: Warm cream
+   - Headings: Playfair Display
+   - Body text: Poppins
+
+   NOTE:
+   Keep existing class names consistent across all three HTML pages.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. DESIGN SETTINGS
+   Edit these variables to update the website's colors, fonts, and dimensions.
    ========================================================================== */
 
 :root {
-  --red:       #af2828;
-  --red-deep:  #8a1d1d;
-  --red-dark:  #3f0f0f;
-  --gold:      #d9a23b;
-  --gold-soft: #f2dca6;
-  --cream:     #fbf5ea;
-  --paper:     #fffdf8;
-  --ink:       #2b1212;
-  --ink-soft:  #6f5757;
-  --line:      rgba(63, 15, 15, 0.14);
 
+  /* Brand Colors */
+  --red: #af2828;
+  --red-deep: #8a1d1d;
+  --red-dark: #3f0f0f;
+
+  /* Accent Colors */
+  --gold: #d9a23b;
+  --gold-soft: #f2dca6;
+
+  /* Background Colors */
+  --cream: #fbf5ea;
+  --paper: #fffdf8;
+
+  /* Text Colors */
+  --ink: #2b1212;
+  --ink-soft: #6f5757;
+
+  /* Borders */
+  --line: rgba(63, 15, 15, 0.14);
+
+  /* Typography */
   --font-display: 'Playfair Display', Georgia, serif;
   --font-body: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
+  /* Layout */
   --max: 1080px;
+
+  /* Border Radius */
   --r-lg: 20px;
   --r-md: 14px;
+
+  /* Shadows */
   --shadow: 0 14px 34px -18px rgba(63, 15, 15, 0.4);
 }
 
-/* ---------- Base ---------- */
-* { box-sizing: border-box; }
-[hidden] { display: none !important; }
-html { scroll-behavior: smooth; }
 
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+/* ==========================================================================
+   2. GLOBAL RESET AND BASE STYLES
+   Applies to all pages.
+   ========================================================================== */
+
+/* Use predictable sizing for all elements. */
+* {
+  box-sizing: border-box;
 }
 
+/* Respect the hidden attribute. */
+[hidden] {
+  display: none !important;
+}
+
+/* Smooth scrolling for normal motion preferences. */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Base page styling. */
 body {
   margin: 0;
   background: var(--cream);
@@ -45,143 +94,531 @@ body {
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
-img { max-width: 100%; display: block; }
-button { font-family: inherit; }
-a { color: inherit; }
-h1, h2, h3 { font-family: var(--font-display); margin: 0 0 0.4em; line-height: 1.15; }
-p { margin: 0 0 1em; }
 
-/* ---------- Header (all pages) ---------- */
+/* Responsive images. */
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* Inherit the site's font in buttons. */
+button {
+  font-family: inherit;
+}
+
+/* Links inherit their surrounding text color by default. */
+a {
+  color: inherit;
+}
+
+/* Shared heading styles. */
+h1,
+h2,
+h3 {
+  margin: 0 0 0.4em;
+  font-family: var(--font-display);
+  line-height: 1.15;
+}
+
+/* Shared paragraph spacing. */
+p {
+  margin: 0 0 1em;
+}
+
+
+/* ==========================================================================
+   3. HEADER
+   Shared by all three pages.
+   ========================================================================== */
+
 .site-header {
+  padding: 18px 20px;
   background: var(--paper);
   border-bottom: 4px solid var(--red);
-  padding: 18px 20px;
 }
+
+/* Main header layout. */
 .header-inner {
-  max-width: 900px;
-  margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 14px 18px;
-}
-.brand-logo { width: 84px; height: 84px; flex-shrink: 0; }
-.brand-logo img { width: 100%; height: 100%; object-fit: contain; }
-.brand-copy { min-width: 0; flex: 1 1 200px; }
-.brand-eyebrow:empty { display: none; }
-.brand-name { font-size: clamp(24px, 6vw, 34px); color: var(--red); margin: 0 0 4px; }
-.brand-tagline { margin: 0; font-size: 13px; color: var(--ink-soft); font-style: italic; }
 
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Restaurant logo container. */
+.brand-logo {
+  flex-shrink: 0;
+  width: 84px;
+  height: 84px;
+}
+
+/* Keep the entire logo visible. */
+.brand-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Restaurant name and tagline container. */
+.brand-copy {
+  flex: 1 1 200px;
+  min-width: 0;
+}
+
+/* Hide the eyebrow element when it has no content. */
+.brand-eyebrow:empty {
+  display: none;
+}
+
+/* Restaurant name. */
+.brand-name {
+  margin: 0 0 4px;
+  color: var(--red);
+  font-size: clamp(24px, 6vw, 34px);
+}
+
+/* Restaurant tagline. */
+.brand-tagline {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-style: italic;
+}
+
+/* Address, opening hours, phone numbers, and delivery information. */
 .header-strip {
-  flex: 1 1 100%;
   display: flex;
+  flex: 1 1 100%;
   flex-wrap: wrap;
   gap: 8px 22px;
+
   padding-top: 12px;
   border-top: 1px solid var(--line);
 }
-.header-strip-item { display: flex; align-items: flex-start; gap: 6px; font-size: 13px; }
-.header-strip-item a { text-decoration: underline; text-underline-offset: 2px; }
-.header-strip-item a:hover { color: var(--red); }
+
+/* Individual header information item. */
+.header-strip-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 13px;
+}
+
+/* Header contact links. */
+.header-strip-item a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.header-strip-item a:hover {
+  color: var(--red);
+}
+
+
+/* ==========================================================================
+   4. HOME BUTTON
+   Used on pages that include a link back to the homepage.
+   ========================================================================== */
 
 .home-button {
-  margin-left: auto;
   display: inline-flex;
   align-items: center;
   gap: 6px;
+
+  margin-left: auto;
   padding: 9px 18px;
+
   background: var(--red);
   color: var(--paper);
   border-radius: 999px;
-  text-decoration: none;
-  font-weight: 600;
+
   font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
   white-space: nowrap;
-  transition: background 0.2s ease, transform 0.2s ease;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
 }
-.home-button:hover { background: var(--red-deep); transform: translateY(-2px); }
 
-/* ---------- Section headings ---------- */
-.section-heading { text-align: center; font-size: clamp(1.5rem, 4.5vw, 2.1rem); color: var(--red); }
-.section-heading--left { text-align: left; }
+.home-button:hover {
+  background: var(--red-deep);
+  transform: translateY(-2px);
+}
 
-/* ---------- Home page: two main choices ---------- */
-.choose { max-width: var(--max); margin: 0 auto; padding: 3rem 1.25rem; }
-.choice-grid { display: grid; grid-template-columns: 1fr; gap: 1.4rem; max-width: 900px; margin: 1.5rem auto 0; }
+
+/* ==========================================================================
+   5. SECTION HEADINGS
+   Shared heading styles for homepage sections.
+   ========================================================================== */
+
+.section-heading {
+  color: var(--red);
+  font-size: clamp(1.5rem, 4.5vw, 2.1rem);
+  text-align: center;
+}
+
+/* Align a section heading to the left. */
+.section-heading--left {
+  text-align: left;
+}
+
+
+/* ==========================================================================
+   6. HOMEPAGE — TABLE MENU AND ONLINE ORDERING
+   Styles the two main navigation cards.
+   ========================================================================== */
+
+/* Main section container. */
+.choose {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 3rem 1.25rem;
+}
+
+/* Layout for the two choice cards. */
+.choice-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.4rem;
+
+  max-width: 900px;
+  margin: 1.5rem auto 0;
+}
+
+/* Shared card styles. */
 .choice-card {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  text-align: center; text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 220px;
+  padding: 2.2rem 1.5rem;
+
   background: var(--paper);
   border: 1px solid var(--line);
   border-top: 4px solid var(--red);
   border-radius: var(--r-lg);
-  padding: 2.2rem 1.5rem;
-  min-height: 220px;
+
   box-shadow: 0 10px 26px -18px rgba(63, 15, 15, 0.35);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+
+  text-align: center;
+  text-decoration: none;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
 }
-.choice-card:hover, .choice-card:focus-visible { transform: translateY(-6px); box-shadow: var(--shadow); border-top-color: var(--gold); }
-.choice-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
-.choice-card h3 { font-size: 1.4rem; color: var(--red-dark); }
-.choice-card p { color: var(--ink-soft); max-width: 32ch; margin-bottom: 0; }
+
+/* Hover and keyboard-focus effects. */
+.choice-card:hover,
+.choice-card:focus-visible {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow);
+  border-top-color: var(--gold);
+}
+
+/* Card icon. */
+.choice-icon {
+  margin-bottom: 0.5rem;
+  font-size: 2.5rem;
+}
+
+/* Card title. */
+.choice-card h3 {
+  color: var(--red-dark);
+  font-size: 1.4rem;
+}
+
+/* Card description. */
+.choice-card p {
+  max-width: 32ch;
+  margin-bottom: 0;
+  color: var(--ink-soft);
+}
+
+/* Card button appearance. */
 .choice-button {
-  margin-top: 1.1rem; display: inline-block;
-  background: var(--red); color: var(--paper);
-  font-weight: 600; font-size: 0.95rem;
-  padding: 0.8rem 1.8rem; border-radius: 999px;
-  transition: background 0.2s ease, color 0.2s ease;
-}
-.choice-card:hover .choice-button { background: var(--gold); color: var(--red-dark); }
+  display: inline-block;
+  margin-top: 1.1rem;
+  padding: 0.8rem 1.8rem;
 
-/* ---------- Home page: events section ---------- */
-.about { padding: 2rem 1.25rem 4rem; max-width: var(--max); margin: 0 auto; }
-.about-inner { display: grid; grid-template-columns: 1fr; gap: 2rem; align-items: center; margin-top: 1.5rem; }
+  background: var(--red);
+  color: var(--paper);
+  border-radius: 999px;
+
+  font-size: 0.95rem;
+  font-weight: 600;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+/* Change the button appearance when its card is hovered. */
+.choice-card:hover .choice-button {
+  background: var(--gold);
+  color: var(--red-dark);
+}
+
+
+/* ==========================================================================
+   7. HOMEPAGE — EVENTS AND CELEBRATIONS
+   Includes the event image, descriptive text, and contact information.
+   ========================================================================== */
+
+/* Main events section. */
+.about {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+}
+
+/* Image and text layout. */
+.about-inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: 2rem;
+
+  margin-top: 1.5rem;
+}
+
+/* Event image container. */
 .about-image-frame {
-  position: relative; width: 100%; aspect-ratio: 1080 / 1044;
-  border-radius: var(--r-lg); overflow: hidden;
-  background: var(--red-deep); box-shadow: var(--shadow);
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1080 / 1044;
+  overflow: hidden;
+
+  background: var(--red-deep);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow);
 }
-.about-image-frame img { width: 100%; height: 100%; object-fit: contain; }
-.about-text p { font-size: 1.02rem; color: var(--ink); max-width: 58ch; }
-.about-text a { color: var(--red); font-weight: 600; }
+
+/* Event image sizing. */
+.about-image-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Events description. */
+.about-text p {
+  max-width: 58ch;
+  color: var(--ink);
+  font-size: 1.02rem;
+}
+
+/* Contact link inside the events section. */
+.about-text a {
+  color: var(--red);
+  font-weight: 600;
+}
+
+/* Fallback shown when the event image cannot load. */
 .fallback-label {
-  display: none; position: absolute; inset: 0;
-  align-items: center; justify-content: center;
-  color: var(--gold-soft); background: var(--red-deep);
-}
-.image-fallback .fallback-label { display: flex; }
-.image-fallback img { display: none; }
+  position: absolute;
+  inset: 0;
 
-/* ---------- Footer (all pages) ---------- */
-.site-footer { background: var(--red-dark); color: var(--paper); padding: 2.5rem 1.25rem 1.5rem; }
+  display: none;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--red-deep);
+  color: var(--gold-soft);
+}
+
+/* Show the fallback label when the image fails. */
+.image-fallback .fallback-label {
+  display: flex;
+}
+
+/* Hide the broken image. */
+.image-fallback img {
+  display: none;
+}
+
+
+/* ==========================================================================
+   8. FOOTER
+   Shared footer styling for all three pages.
+   ========================================================================== */
+
+/* Main footer container. */
+.site-footer {
+  padding: 2.5rem 1.25rem 1.5rem;
+  background: var(--red-dark);
+  color: var(--paper);
+}
+
+/* Footer columns. */
 .footer-inner {
-  max-width: var(--max); margin: 0 auto;
-  display: grid; grid-template-columns: 1fr; gap: 1.5rem; text-align: center;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+
+  max-width: var(--max);
+  margin: 0 auto;
+
+  text-align: center;
 }
-.footer-name { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--gold-soft); margin-bottom: 0.15em; }
-.footer-tagline { font-style: italic; color: rgba(255, 253, 248, 0.8); margin: 0; }
-.footer-heading { font-weight: 600; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.4em; }
-.footer-details p, .footer-catering p { font-size: 0.92rem; margin-bottom: 0.3em; color: rgba(255, 253, 248, 0.9); }
-.footer-details a:hover { color: var(--gold-soft); }
+
+/* Restaurant name in the footer. */
+.footer-name {
+  margin-bottom: 0.15em;
+  color: var(--gold-soft);
+
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+/* Footer tagline. */
+.footer-tagline {
+  margin: 0;
+  color: rgba(255, 253, 248, 0.8);
+  font-style: italic;
+}
+
+/* Footer subsection headings. */
+.footer-heading {
+  margin-bottom: 0.4em;
+  color: var(--gold);
+
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Footer details and event information. */
+.footer-details p,
+.footer-catering p {
+  margin-bottom: 0.3em;
+  color: rgba(255, 253, 248, 0.9);
+  font-size: 0.92rem;
+}
+
+/* Footer contact link hover effect. */
+.footer-details a:hover {
+  color: var(--gold-soft);
+}
+
+/* Copyright notice. */
 .footer-copyright {
-  max-width: var(--max); margin: 1.5rem auto 0; padding-top: 1.1rem;
+  max-width: var(--max);
+  margin: 1.5rem auto 0;
+  padding-top: 1.1rem;
+
   border-top: 1px solid rgba(255, 253, 248, 0.15);
-  font-size: 0.8rem; color: rgba(255, 253, 248, 0.6); text-align: center;
+
+  color: rgba(255, 253, 248, 0.6);
+  font-size: 0.8rem;
+  text-align: center;
 }
 
-/* ---------- Scroll reveal ---------- */
-.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s ease; }
-.reveal.is-visible { opacity: 1; transform: translateY(0); }
 
-/* ---------- Larger screens ---------- */
+/* ==========================================================================
+   9. SCROLL-REVEAL ANIMATION
+   Works with the classes added by script.js.
+   ========================================================================== */
+
+/* Initial state before the section becomes visible. */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+}
+
+/* Final state after the section becomes visible. */
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* ==========================================================================
+   10. RESPONSIVE LAYOUT — TABLETS AND DESKTOPS
+   Applies when the viewport is at least 700px wide.
+   ========================================================================== */
+
 @media (min-width: 700px) {
-  .brand-logo { width: 96px; height: 96px; }
-  .choice-grid { grid-template-columns: 1fr 1fr; }
-  .about-inner { grid-template-columns: 0.9fr 1.1fr; }
-  .footer-inner { grid-template-columns: 1.2fr 1fr 1fr; text-align: left; }
+
+  /* Increase logo size. */
+  .brand-logo {
+    width: 96px;
+    height: 96px;
+  }
+
+  /* Display the two homepage cards side by side. */
+  .choice-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Display the event image and text side by side. */
+  .about-inner {
+    grid-template-columns: 0.9fr 1.1fr;
+  }
+
+  /* Display the footer in three columns. */
+  .footer-inner {
+    grid-template-columns: 1.2fr 1fr 1fr;
+    text-align: left;
+  }
+
 }
+
+
+/* ==========================================================================
+   11. RESPONSIVE LAYOUT — VERY SMALL SCREENS
+   Applies to devices with a viewport no wider than 380px.
+   ========================================================================== */
 
 @media (max-width: 380px) {
-  .brand-logo { width: 68px; height: 68px; }
-  .home-button { padding: 8px 12px; font-size: 0.8rem; }
+
+  /* Reduce logo size on narrow screens. */
+  .brand-logo {
+    width: 68px;
+    height: 68px;
+  }
+
+  /* Make the home button fit smaller screens. */
+  .home-button {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+
+}
+
+
+/* ==========================================================================
+   12. ACCESSIBILITY — REDUCED MOTION
+   Reduces animation and transition durations for visitors who request it.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
 }
