@@ -1,79 +1,297 @@
+
 /* ==========================================================================
-   BARAZA — MENU STYLES (index1.html and index2.html)
-   Load AFTER style.css. Colors/fonts/header/footer come from style.css.
+   BARAZA RESTAURANT & CAFE
+   Digital Menu Styles
+   Files: index1.html and index2.html
+   Stylesheet: style1.css / style2.css (depending on your page setup)
+
+   IMPORTANT:
+   Load this stylesheet AFTER the main style.css file.
+   The main stylesheet provides the colors, fonts, header, and footer styles.
    ========================================================================== */
 
-/* ---------- Category navigation ---------- */
+
+/* ==========================================================================
+   1. CATEGORY NAVIGATION BAR
+   The sticky navigation lets customers jump between menu categories.
+   ========================================================================== */
+
 .category-nav {
-  position: sticky; top: 0; z-index: 50;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+
   background: var(--red);
   box-shadow: 0 6px 18px -10px rgba(63, 15, 15, 0.6);
 }
+
+/* Horizontal scrolling container for category buttons */
 .category-nav-scroll {
-  display: flex; gap: 10px;
-  overflow-x: auto; -webkit-overflow-scrolling: touch;
-  padding: 12px 16px; scrollbar-width: none;
-}
-.category-nav-scroll::-webkit-scrollbar { display: none; }
-/* centers the pills when they fit, scrolls from the start when they don't */
-.nav-pill:first-child { margin-left: auto; }
-.nav-pill:last-child { margin-right: auto; }
+  display: flex;
+  gap: 10px;
 
+  padding: 12px 16px;
+
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+/* Hide the scrollbar in WebKit browsers */
+.category-nav-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/*
+   Center the category buttons when they fit in the available space.
+   When they overflow, customers can scroll horizontally from the start.
+*/
+.nav-pill:first-child {
+  margin-left: auto;
+}
+
+.nav-pill:last-child {
+  margin-right: auto;
+}
+
+/* Default appearance of each category button */
 .nav-pill {
-  flex-shrink: 0; cursor: pointer; white-space: nowrap;
-  min-height: 40px; padding: 8px 18px;
+  flex-shrink: 0;
+  cursor: pointer;
+  white-space: nowrap;
+
+  min-height: 40px;
+  padding: 8px 18px;
+
   border: 1.5px solid rgba(255, 253, 248, 0.55);
-  background: transparent; color: var(--paper);
-  font-weight: 500; font-size: 14px; border-radius: 999px;
-  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-}
-.nav-pill:hover { background: rgba(255, 253, 248, 0.15); }
-.nav-pill.active { background: var(--gold); border-color: var(--gold); color: var(--red-dark); font-weight: 600; }
-.nav-pill:focus-visible { outline: 3px solid var(--gold-soft); outline-offset: 2px; }
+  border-radius: 999px;
 
-/* ---------- Menu sections ---------- */
-.menu-content { max-width: 900px; margin: 0 auto; padding: 8px 18px 48px; }
-.category-section { margin-top: 36px; scroll-margin-top: 76px; }
+  background: transparent;
+  color: var(--paper);
+
+  font-size: 14px;
+  font-weight: 500;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+/* Appearance when a customer hovers over a category */
+.nav-pill:hover {
+  background: rgba(255, 253, 248, 0.15);
+}
+
+/* Appearance of the currently active category */
+.nav-pill.active {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--red-dark);
+  font-weight: 600;
+}
+
+/* Visible keyboard focus for accessibility */
+.nav-pill:focus-visible {
+  outline: 3px solid var(--gold-soft);
+  outline-offset: 2px;
+}
+
+
+/* ==========================================================================
+   2. MENU CONTENT CONTAINER
+   Controls the width and spacing of the menu on the page.
+   ========================================================================== */
+
+.menu-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 8px 18px 48px;
+}
+
+
+/* ==========================================================================
+   3. MENU CATEGORY SECTIONS
+   Each category has a heading and a list of menu items.
+   ========================================================================== */
+
+.category-section {
+  margin-top: 36px;
+
+  /* Keeps headings visible below the sticky navigation after scrolling. */
+  scroll-margin-top: 76px;
+}
+
+/* Category heading, for example "Starters" or "Seafood" */
 .category-heading {
-  font-size: clamp(1.4rem, 4vw, 1.9rem); color: var(--red);
-  padding-bottom: 8px; margin-bottom: 14px;
-  border-bottom: 2px solid var(--gold);
-}
-.category-note { font-size: 13px; color: var(--ink-soft); font-style: italic; }
+  margin-bottom: 14px;
+  padding-bottom: 8px;
 
-.item-list { display: flex; flex-direction: column; gap: 10px; }
+  border-bottom: 2px solid var(--gold);
+
+  color: var(--red);
+  font-size: clamp(1.4rem, 4vw, 1.9rem);
+}
+
+/* Optional description displayed beneath a category heading */
+.category-note {
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-style: italic;
+}
+
+
+/* ==========================================================================
+   4. MENU ITEM LIST
+   Mobile uses one column. Larger screens can use two columns.
+   ========================================================================== */
+
+.item-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+
+/* ==========================================================================
+   5. INDIVIDUAL MENU ITEM CARD
+   Controls the background, border, spacing, and layout of each item.
+   ========================================================================== */
 
 .menu-item {
   position: relative;
-  display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 8px 14px;
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 8px 14px;
+  padding: 14px 16px 14px 20px;
+
   background: var(--paper);
   border: 1px solid var(--line);
   border-radius: var(--r-md);
-  padding: 14px 16px 14px 20px;
+
   box-shadow: 0 2px 10px -6px rgba(63, 15, 15, 0.3);
 }
+
+/* Decorative red stripe on the left side of each menu card */
 .menu-item::before {
-  content: ""; position: absolute; top: 10px; bottom: 10px; left: 0; width: 4px;
-  border-radius: 0 4px 4px 0; background: var(--red);
-}
-.menu-item-info { flex: 1 1 200px; min-width: 0; }
-.menu-item-name { margin: 0; font-family: var(--font-body); font-weight: 600; font-size: 15.5px; line-height: 1.35; }
-.menu-item-desc { margin: 4px 0 0; font-size: 13px; color: var(--ink-soft); line-height: 1.5; }
-.menu-item-price {
-  flex: 0 0 auto; margin-left: auto; white-space: nowrap;
-  font-family: var(--font-display); font-weight: 700; font-size: 15.5px; color: var(--red);
-  padding: 4px 12px; background: rgba(217, 162, 59, 0.16);
-  border: 1px solid rgba(217, 162, 59, 0.5); border-radius: var(--r-md);
+  content: "";
+
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: 0;
+
+  width: 4px;
+
+  background: var(--red);
+  border-radius: 0 4px 4px 0;
 }
 
-/* ---------- Footer note on menu pages ---------- */
-.site-footer .footer-copyright { margin-top: 0; border-top: 0; padding-top: 0; }
+
+/* ==========================================================================
+   6. MENU ITEM NAME AND DESCRIPTION
+   ========================================================================== */
+
+/* Container for the item's name and optional description */
+.menu-item-info {
+  flex: 1 1 200px;
+  min-width: 0;
+}
+
+/* Menu item name, for example "Chicken Fried Rice" */
+.menu-item-name {
+  margin: 0;
+
+  font-family: var(--font-body);
+  font-size: 15.5px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+/* Optional description displayed below the item name */
+.menu-item-desc {
+  margin: 4px 0 0;
+
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+
+/* ==========================================================================
+   7. MENU ITEM PRICE
+   ========================================================================== */
+
+.menu-item-price {
+  flex: 0 0 auto;
+  margin-left: auto;
+  padding: 4px 12px;
+
+  white-space: nowrap;
+
+  background: rgba(217, 162, 59, 0.16);
+  border: 1px solid rgba(217, 162, 59, 0.5);
+  border-radius: var(--r-md);
+
+  color: var(--red);
+  font-family: var(--font-display);
+  font-size: 15.5px;
+  font-weight: 700;
+}
+
+
+/* ==========================================================================
+   8. FOOTER ADJUSTMENTS
+   Removes extra spacing and the top border from the menu page copyright.
+   Other footer styles still come from style.css.
+   ========================================================================== */
+
+.site-footer .footer-copyright {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+
+/* ==========================================================================
+   9. TABLET AND DESKTOP LAYOUT
+   At 700px and above, display menu items in two columns.
+   ========================================================================== */
 
 @media (min-width: 700px) {
-  .item-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px 16px; }
-  .category-section[id="bbq-combos"] .item-list { grid-template-columns: 1fr; }
+
+  .item-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px 16px;
+  }
+
+  /*
+     Keep BBQ Combos in a single column.
+     The category section must have id="bbq-combos" in the HTML.
+  */
+  .category-section[id="bbq-combos"] .item-list {
+    grid-template-columns: 1fr;
+  }
 }
+
+
+/* ==========================================================================
+   10. SMALL MOBILE SCREENS
+   Slightly reduce card spacing and item-name size on narrow screens.
+   ========================================================================== */
+
 @media (max-width: 380px) {
-  .menu-item { padding: 12px 14px 12px 18px; }
-  .menu-item-name { font-size: 14.5px; }
+
+  .menu-item {
+    padding: 12px 14px 12px 18px;
+  }
+
+  .menu-item-name {
+    font-size: 14.5px;
+  }
 }
