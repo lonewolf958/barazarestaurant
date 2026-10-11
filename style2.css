@@ -113,7 +113,7 @@ body.cart-open { overflow: hidden; }
 .order-type-label { display: flex; align-items: center; gap: 8px; margin: 0 0 10px; font-weight: 600; font-size: 13px; color: var(--red-dark); }
 .order-type-label-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); }
 
-.order-type-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.order-type-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 9px; }
 .order-type-btn {
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
   min-height: 70px; padding: 10px 4px; cursor: pointer; text-align: center;
