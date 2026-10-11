@@ -1,11 +1,11 @@
 /* ==========================================================================
    BARAZA RESTAURANT & CAFE — ORDER PAGE SCRIPT (index2.html)
-   Menu + side choice + cart + Delivery / Pickup / Dine in + WhatsApp order
+   Menu + choices (Fried/BBQ, side) + cart + Delivery / Pickup + WhatsApp order
    ========================================================================== */
 
 /* ---------- Settings (edit here) ---------- */
 
-const WHATSAPP_NUMBER = "25570000000";
+const WHATSAPP_NUMBER = "255753423253";
 const RESTAURANT_NAME = "Baraza Restaurant & Cafe";
 const CART_STORAGE_KEY = "barazaCart";
 
@@ -27,14 +27,18 @@ const OTHER_AREA = "other"; /* fee confirmed by the restaurant on WhatsApp */
 
 const TYPE_LABELS = {
   delivery: "Delivery",
-  pickup: "Pickup",
-  dinein: "Dine in (table)"
+  pickup: "Pickup"
 };
 
 /* ---------- Menu data ---------- */
 /* sides: true  -> customer must choose a side before adding to cart */
 
-const list = (rows, desc) => rows.map(([name, price]) => ({ name, price, desc }));
+/* A row can have a 3rd value: choices the customer must make BEFORE the side
+   (e.g. Fried or BBQ). Each choice shows as its own dropdown. */
+const FRIED_BBQ = [{ label: "Fried or BBQ", values: ["Fried", "BBQ"] }];
+const PROTEIN = [{ label: "Chicken, Beef or Veg", values: ["Chicken", "Beef", "Veg"] }];
+
+const list = (rows, desc) => rows.map(([name, price, opts]) => ({ name, price, desc, opts }));
 
 const MENU_DATA = [
   {
@@ -79,7 +83,7 @@ const MENU_DATA = [
     name: "Chicken Mzinga",
     sides: true,
     items: list([
-      ["Pilipili Chicken (Fried or BBQ)", 24000], ["Peri-Peri Chicken (Fried or BBQ)", 24000],
+      ["Pilipili Chicken", 24000, FRIED_BBQ], ["Peri-Peri Chicken", 24000, FRIED_BBQ],
       ["Crunchy Chicken (Fried)", 24000], ["Chicken Poussin (Fried)", 24000], ["Chilly Milly", 26000]
     ], SERVED)
   },
@@ -88,8 +92,8 @@ const MENU_DATA = [
     name: "Seafood",
     sides: true,
     items: list([
-      ["Fish Boti (4 Sticks Per Plate)", 18000], ["Fish Fillet (Fried or BBQ)", 24000],
-      ["Masala Prawns (Fried or BBQ)", 24000], ["Garlic Butter Prawns (Fried or BBQ)", 24000],
+      ["Fish Boti (4 Sticks Per Plate)", 18000], ["Fish Fillet", 24000, FRIED_BBQ],
+      ["Masala Prawns", 24000, FRIED_BBQ], ["Garlic Butter Prawns", 24000, FRIED_BBQ],
       ["Garlic Butter Fish (Fried)", 24000], ["Schezwan Prawns (Fried)", 24000]
     ], SERVED)
   },
@@ -120,7 +124,7 @@ const MENU_DATA = [
     items: list([
       ["Steamed Rice", 5000], ["Jeera Rice", 7000], ["Vegetable Fried Rice", 8000],
       ["Chicken Fried Rice", 12000], ["Beef Fried Rice", 10000], ["Prawns Fried Rice", 15000],
-      ["Fish Fried Rice", 13000], ["Schezwan Fried Rice (Chicken, Beef or Veg)", 10000]
+      ["Fish Fried Rice", 13000], ["Schezwan Fried Rice", 10000, PROTEIN]
     ])
   },
   {
@@ -147,7 +151,7 @@ function el(tag, className, html) {
 }
 
 let cart = [];
-let orderType = null; /* "delivery" | "pickup" | "dinein" | null */
+let orderType = null; /* "delivery" | "pickup" | null */
 
 /* ==========================================================================
    MENU RENDERING
@@ -205,8 +209,20 @@ function renderMenu() {
       /* actions row: side choice (if needed) + add button */
       const actions = el("div", "menu-item-actions");
 
+      /* 1) choices first (Fried or BBQ / Chicken, Beef or Veg) */
+      (item.opts || []).forEach((opt) => {
+        const select = el("select", "side-select opt-select");
+        select.setAttribute("aria-label", opt.label + " for " + item.name);
+        select.innerHTML =
+          '<option value="">Choose: ' + opt.label + " *</option>" +
+          opt.values.map((v) => '<option value="' + v + '">' + v + "</option>").join("");
+        select.addEventListener("change", () => select.classList.remove("needs-side"));
+        actions.appendChild(select);
+      });
+
+      /* 2) then the side */
       if (cat.sides) {
-        const select = el("select", "side-select");
+        const select = el("select", "side-select side-pick");
         select.setAttribute("aria-label", "Choose a side for " + item.name);
         select.innerHTML =
           '<option value="">Choose your side *</option>' +
@@ -235,25 +251,25 @@ function handleMenuClick(e) {
   if (!btn) return;
 
   const row = btn.closest(".menu-item");
-  const select = row.querySelector(".side-select");
-  let name = row.dataset.name;
-  let key = row.dataset.cat + "::" + name;
+  const optSelects = Array.from(row.querySelectorAll(".opt-select"));
+  const sideSelect = row.querySelector(".side-pick");
 
-  if (select) {
-    if (!select.value) {
-      /* a side is required for these dishes */
-      select.classList.add("needs-side");
-      select.focus();
-      return;
-    }
-    name += " with " + select.value;
-    key += "::" + select.value;
+  /* every choice is required, in order: options first, then side */
+  const missing = optSelects.concat(sideSelect ? [sideSelect] : []).find((s) => !s.value);
+  if (missing) {
+    missing.classList.add("needs-side");
+    missing.focus();
+    return;
   }
 
-  addToCart(key, name, Number(row.dataset.price));
+  let name = row.dataset.name;
+  if (optSelects.length) name += " (" + optSelects.map((s) => s.value).join(", ") + ")";
+  if (sideSelect) name += " with " + sideSelect.value;
 
-  /* auto-refresh: clear the side choice so the customer can pick again */
-  if (select) select.selectedIndex = 0;
+  addToCart(row.dataset.cat + "::" + name, name, Number(row.dataset.price));
+
+  /* auto-refresh: clear all choices so the customer can pick again */
+  row.querySelectorAll("select").forEach((s) => { s.selectedIndex = 0; });
 
   btn.classList.add("added");
   btn.textContent = "Added ✓";
@@ -375,7 +391,7 @@ function renderTotals() {
 }
 
 /* ==========================================================================
-   ORDER FORM: Delivery / Pickup / Dine in
+   ORDER FORM: Delivery / Pickup
    ========================================================================== */
 
 function populateAreas() {
@@ -398,7 +414,6 @@ function syncForm() {
 
   $("cart-customer-fields").hidden = !t;
   $("order-type-hint").hidden = !!t;
-  $("dinein-fields").hidden = t !== "dinein";
   $("delivery-fields").hidden = t !== "delivery";
   $("other-area-wrap").hidden = !(t === "delivery" && $("delivery-area").value === OTHER_AREA);
 
@@ -416,10 +431,6 @@ function isOrderValid() {
   if (!cart.length || !orderType) return false;
   if (!val("customer-name") || !val("customer-contact")) return false;
 
-  if (orderType === "dinein") {
-    return !!val("arrival-time") && Number(val("party-size")) >= 1;
-  }
-
   if (orderType === "delivery") {
     const area = $("delivery-area").value;
     if (!area) return false;
@@ -436,7 +447,7 @@ function updateSendButton() {
 
 function resetOrderForm() {
   orderType = null;
-  ["customer-name", "customer-contact", "arrival-time", "party-size",
+  ["customer-name", "customer-contact",
    "customer-other-area", "customer-address", "customer-notes"].forEach((id) => { $(id).value = ""; });
   $("delivery-area").selectedIndex = 0;
   syncForm();
@@ -469,11 +480,6 @@ function sendOrderToWhatsApp() {
   lines.push("Order type: " + TYPE_LABELS[orderType]);
   lines.push("Name: " + val("customer-name"));
   lines.push("Contact: " + val("customer-contact"));
-
-  if (orderType === "dinein") {
-    lines.push("Time of arrival: " + val("arrival-time"));
-    lines.push("Number of people: " + val("party-size"));
-  }
 
   if (orderType === "delivery") {
     const area = $("delivery-area").value;
