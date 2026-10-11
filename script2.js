@@ -5,7 +5,7 @@
 
 /* ---------- Settings (edit here) ---------- */
 
-const WHATSAPP_NUMBER = "255753423253";
+const WHATSAPP_NUMBER = "255789100555";
 const RESTAURANT_NAME = "Baraza Restaurant & Cafe";
 const CART_STORAGE_KEY = "barazaCart";
 
@@ -13,17 +13,7 @@ const CART_STORAGE_KEY = "barazaCart";
 const SIDES = ["Chips", "Rice", "Noodles", "Naan"];
 const SERVED = "Served with chips, rice, noodles or naan.";
 
-/* Delivery areas and fees */
-const DELIVERY_AREAS = [
-  { name: "Town", fee: 2000 },
-  { name: "Upanga", fee: 2000 },
-  { name: "Kariakoo", fee: 2000 },
-  { name: "Posta", fee: 2000 },
-  { name: "Seaview/Ocean Road", fee: 3000 },
-  { name: "Magomeni", fee: 5000 },
-  { name: "Ilala", fee: 7000 }
-];
-const OTHER_AREA = "other"; /* fee confirmed by the restaurant on WhatsApp */
+/* Delivery: the customer types their area and address; the fee is confirmed on WhatsApp. */
 
 const TYPE_LABELS = {
   delivery: "Delivery",
@@ -328,14 +318,6 @@ function clearCart() {
 const foodTotal = () => cart.reduce((sum, i) => sum + i.price * i.qty, 0);
 const cartCount = () => cart.reduce((sum, i) => sum + i.qty, 0);
 
-function deliveryFee() {
-  if (orderType !== "delivery") return 0;
-  const area = DELIVERY_AREAS.find((a) => a.name === val("delivery-area"));
-  return area ? area.fee : 0;
-}
-
-const feeToBeConfirmed = () => orderType === "delivery" && $("delivery-area").value === OTHER_AREA;
-
 /* ---------- Rendering ---------- */
 
 function refreshCart() {
@@ -381,26 +363,17 @@ function renderCartItems() {
 
 function renderTotals() {
   const food = foodTotal();
-  const fee = deliveryFee();
-  const pending = feeToBeConfirmed();
+  const delivery = orderType === "delivery";
 
   $("cart-food-total-value").textContent = fmt(food);
-  $("cart-delivery-line").hidden = orderType !== "delivery";
-  $("cart-delivery-fee-value").textContent = pending ? "To be confirmed" : fmt(fee);
-  $("cart-total-value").textContent = pending ? fmt(food) + " + fee" : fmt(food + fee);
+  $("cart-delivery-line").hidden = !delivery;
+  $("cart-delivery-fee-value").textContent = "To be confirmed";
+  $("cart-total-value").textContent = delivery ? fmt(food) + " + fee" : fmt(food);
 }
 
 /* ==========================================================================
    ORDER FORM: Delivery / Pickup
    ========================================================================== */
-
-function populateAreas() {
-  const select = $("delivery-area");
-  select.innerHTML =
-    '<option value="" disabled selected>Select your delivery area *</option>' +
-    DELIVERY_AREAS.map((a) => '<option value="' + a.name + '">' + a.name + " — " + fmt(a.fee) + "</option>").join("") +
-    '<option value="' + OTHER_AREA + '">Other Area</option>';
-}
 
 function setOrderType(type) {
   if (!TYPE_LABELS[type]) return;
@@ -415,7 +388,6 @@ function syncForm() {
   $("cart-customer-fields").hidden = !t;
   $("order-type-hint").hidden = !!t;
   $("delivery-fields").hidden = t !== "delivery";
-  $("other-area-wrap").hidden = !(t === "delivery" && $("delivery-area").value === OTHER_AREA);
 
   document.querySelectorAll(".order-type-btn").forEach((b) => {
     const on = b.dataset.type === t;
@@ -431,12 +403,7 @@ function isOrderValid() {
   if (!cart.length || !orderType) return false;
   if (!val("customer-name") || !val("customer-contact")) return false;
 
-  if (orderType === "delivery") {
-    const area = $("delivery-area").value;
-    if (!area) return false;
-    if (area === OTHER_AREA && !val("customer-other-area")) return false;
-    return !!val("customer-address");
-  }
+  if (orderType === "delivery") return !!val("customer-area") && !!val("customer-address");
 
   return true; /* pickup */
 }
@@ -448,8 +415,8 @@ function updateSendButton() {
 function resetOrderForm() {
   orderType = null;
   ["customer-name", "customer-contact",
-   "customer-other-area", "customer-address", "customer-notes"].forEach((id) => { $(id).value = ""; });
-  $("delivery-area").selectedIndex = 0;
+   "customer-area", "customer-address", "customer-notes"].forEach((id) => { $(id).value = ""; });
+  $("customer-notes").style.height = "";
   syncForm();
 }
 
@@ -461,8 +428,6 @@ function sendOrderToWhatsApp() {
   if (!isOrderValid()) return;
 
   const food = foodTotal();
-  const fee = deliveryFee();
-  const pending = feeToBeConfirmed();
   const notes = val("customer-notes");
 
   const lines = [
@@ -482,8 +447,7 @@ function sendOrderToWhatsApp() {
   lines.push("Contact: " + val("customer-contact"));
 
   if (orderType === "delivery") {
-    const area = $("delivery-area").value;
-    lines.push("Delivery area: " + (area === OTHER_AREA ? val("customer-other-area") : area));
+    lines.push("Delivery area: " + val("customer-area"));
     lines.push("Delivery address: " + val("customer-address"));
   }
 
@@ -493,8 +457,8 @@ function sendOrderToWhatsApp() {
   lines.push("Food Total: " + fmt(food));
 
   if (orderType === "delivery") {
-    lines.push("Delivery Fee: " + (pending ? "To be confirmed" : fmt(fee)));
-    lines.push("Total: " + (pending ? fmt(food) + " + delivery fee to be confirmed" : fmt(food + fee)));
+    lines.push("Delivery Fee: To be confirmed");
+    lines.push("Total: " + fmt(food) + " + delivery fee to be confirmed");
   } else {
     lines.push("Total: " + fmt(food));
   }
@@ -571,6 +535,12 @@ function setupEvents() {
     else if (action === "remove") removeFromCart(key);
   });
 
+  /* additional note grows by itself as the customer types (no manual resizing) */
+  $("customer-notes").addEventListener("input", (e) => {
+    e.target.style.height = "auto";
+    e.target.style.height = e.target.scrollHeight + "px";
+  });
+
   /* any change in the form re-checks the required fields */
   $("cart-footer").addEventListener("input", updateSendButton);
   $("cart-footer").addEventListener("change", () => {
@@ -622,7 +592,6 @@ document.addEventListener("DOMContentLoaded", () => {
   renderMenu();
   setupActiveTracking();
 
-  populateAreas();
   cart = loadCart();
   setupEvents();
   syncForm();
