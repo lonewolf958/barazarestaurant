@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Baraza Restaurant &amp; Cafe | A Place to Gather, A Taste to Remember</title>
+  <meta name="description" content="Welcome to Baraza Restaurant &amp; Cafe. View our table menu or order your favourite meals online.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand-logo">
+        <img src="logo.jpeg" alt="Baraza Restaurant &amp; Cafe Logo">
+      </div>
+
+      <div class="brand-copy">
+        <p class="brand-eyebrow"></p>
+        <h1 class="brand-name">Baraza Restaurant &amp; Cafe</h1>
+        <p class="brand-tagline">A Place to Gather, A Taste to Remember.</p>
+      </div>
+
+      <div class="header-strip">
+        <div class="header-strip-item">
+          <span class="header-icon">📍</span>
+          <span>Corner of Mtitu &amp; Kalenga Street, Upanga.</span>
+        </div>
+        <div class="header-strip-item">
+          <span class="header-icon">🕛</span>
+          <span>Friday - Wednesday: 6:30 PM - 11:30 PM<br>Thursday: Closed.</span>
+        </div>
+        <div class="header-strip-item">
+          <span class="header-icon">📞</span>
+          <a href="tel:0784786771">0784 786 771</a>
+        </div>
+        <div class="header-strip-item">
+          <span class="header-icon">📞</span>
+          <a href="tel:0753423253">0753 423 253</a>
+        </div>
+        <div class="header-strip-item">
+          <span class="header-icon">🛵</span>
+          <span>We do Home Delivery.</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="choose" id="choose" aria-labelledby="choose-heading">
+      <h2 id="choose-heading" class="section-heading">How would you like to continue?</h2>
+
+      <div class="choice-grid">
+        <a href="index1.html" class="choice-card choice-card--menu">
+          <span class="choice-icon" aria-hidden="true">📖</span>
+          <h3>Table Menu</h3>
+          <p>View our menu and explore our delicious meals.</p>
+          <span class="choice-button">View Table Menu</span>
+        </a>
+
+        <a href="index2.html" class="choice-card choice-card--order">
+          <span class="choice-icon" aria-hidden="true">🛒</span>
+          <h3>Order Online</h3>
+          <p>Order for delivery, pickup, or reserve your dine-in order before you arrive.</p>
+          <span class="choice-button">Order Online</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="about" aria-labelledby="about-heading">
+      <h2 id="about-heading" class="section-heading section-heading--left">Celebrate Your Special Moments at Baraza.</h2>
+      <div class="about-inner">
+        <div class="about-image-frame">
+          <img src="Event.jpeg" alt="Event Area" loading="lazy" onerror="this.closest('.about-image-frame').classList.add('image-fallback')">
+          <div class="fallback-label" aria-hidden="true"><span>Event.jpeg</span></div>
+        </div>
+        <div class="about-text">
+          <p><strong>A Beautiful Space For Every Celebration.</strong></p>
+          <p>
+            Make your special occasions unforgettable at Baraza Restaurant &amp; Cafe. Whether you're planning a wedding, an engagement celebration, a birthday party, an anniversary, or a private event,
+            we're here to help you create meaningful memories with the people who matter most.
+          </p>
+          <p><strong>Your occasion. Your people. Your memories.</strong></p>
+          <p>
+            Planning an event? Contact us to enquire about our venue, availability, and booking arrangements.<br>
+            📞 <a href="tel:0784786771">0784 786 771</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <p class="footer-name">Baraza Restaurant &amp; Cafe.</p>
+        <p class="footer-tagline">A Place to Gather, A Taste to Remember.</p>
+      </div>
+
+      <div class="footer-details">
+        <p class="footer-heading">Visit &amp; Order</p>
+        <p>Corner of Mtitu &amp; Kalenga Street, Upanga.</p>
+        <p>
+          📞 <a href="tel:0784786771">0784 786 771</a>
+          &nbsp;·&nbsp;
+          📞 <a href="tel:0753423253">0753 423 253</a>
+        </p>
+        <p>We do home delivery.</p>
+      </div>
+
+      <div class="footer-catering">
+        <p class="footer-heading">We do Events &amp; Bookings.</p>
+      </div>
+    </div>
+
+    <p class="footer-copyright">
+      © <span id="year"></span> Baraza Restaurant &amp; Cafe. All rights reserved.
+    </p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+  <title>Baraza Restaurant &amp; Cafe — Digital Menu</title>
+  <meta name="description" content="Digital menu for Baraza Restaurant &amp; Cafe, Corner of Mtitu &amp; Kalenga Street, Upanga, Dar es Salaam. A Place to Gather, A Taste to Remember." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- style.css = shared look (same as every page), style1.css = menu -->
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style1.css" />
+</head>
+
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand-logo">
+        <img src="logo.jpeg" alt="Baraza Restaurant &amp; Cafe Logo" />
+      </div>
+
+      <div class="brand-copy">
+        <p class="brand-eyebrow"></p>
+        <h1 class="brand-name">Baraza Restaurant &amp; Cafe</h1>
+        <p class="brand-tagline">A Place to Gather, A Taste to Remember.</p>
+      </div>
+
+      <a href="index.html" class="home-button" aria-label="Go back to home page">🏠 Home</a>
+    </div>
+  </header>
+
+  <nav class="category-nav" aria-label="Menu categories">
+    <div class="category-nav-scroll" id="category-nav" role="tablist"></div>
+  </nav>
+
+  <!-- Category sections are rendered here by script1.js -->
+  <main id="menu-content" class="menu-content"></main>
+
+  <footer class="site-footer">
+    <p class="footer-copyright">
+      © <span id="year"></span> Baraza Restaurant &amp; Cafe. All prices in Tanzanian Shillings.
+    </p>
+  </footer>
+
+  <script src="script1.js"></script>
+</body>
+</html>
