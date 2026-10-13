@@ -1,41 +1,25 @@
-
 /* ==========================================================================
    BARAZA RESTAURANT & CAFE
-   Online Ordering Styles — index2.html
+   Online Ordering Styles — index2.html  (style2.css)
 
-   File: style2.css
-
-   Load order:
-   1. style.css  — shared website styles
-   2. style1.css — menu styles
-   3. style2.css — ordering and cart styles
-
-   Colors, fonts, borders, and radius variables are defined in style.css.
+   Load order: style.css → style1.css → style2.css
+   Colors, fonts, borders and radius variables are defined in style.css.
    ========================================================================== */
 
 
-/* ==========================================================================
-   1. MENU LAYOUT
-   Extra bottom space prevents the floating cart button from covering items.
-   ========================================================================== */
-
+/* 1. MENU LAYOUT — space so the floating cart button doesn't cover items */
 .menu-content {
   padding-bottom: 110px;
 }
 
 
-/* ==========================================================================
-   2. MENU ITEM LAYOUT
-   Separates the dish information from its choices and Add to Cart button.
-   ========================================================================== */
-
+/* 2. MENU ITEM LAYOUT */
 .menu-item {
   flex-direction: column;
   align-items: stretch;
   flex-wrap: nowrap;
 }
 
-/* Dish name, description, and price */
 .menu-item-top {
   display: flex;
   flex-wrap: wrap;
@@ -44,7 +28,6 @@
   gap: 8px 14px;
 }
 
-/* Dropdown choices and Add to Cart button */
 .menu-item-actions {
   display: flex;
   flex-wrap: wrap;
@@ -55,11 +38,7 @@
 }
 
 
-/* ==========================================================================
-   3. MENU CHOICE DROPDOWNS
-   Used for Fried/BBQ choices, protein choices, and side dishes.
-   ========================================================================== */
-
+/* 3. MENU CHOICE DROPDOWNS (Fried/BBQ, protein, sides) */
 .side-select {
   flex: 1 1 170px;
   min-width: 0;
@@ -80,20 +59,17 @@
   cursor: pointer;
 }
 
-/* Keyboard focus */
 .side-select:focus-visible {
   outline: 3px solid var(--red);
   outline-offset: 2px;
 }
 
-/* Highlight a required choice that the customer has not selected */
 .side-select.needs-side {
   border-color: var(--red);
   background: #fdecec;
   animation: nudge 0.35s ease;
 }
 
-/* Small horizontal movement to draw attention to a missing choice */
 @keyframes nudge {
   25% {
     transform: translateX(-4px);
@@ -105,10 +81,7 @@
 }
 
 
-/* ==========================================================================
-   4. ADD TO CART BUTTON
-   ========================================================================== */
-
+/* 4. ADD TO CART BUTTON */
 .add-cart-btn {
   flex-shrink: 0;
 
@@ -133,18 +106,15 @@
     transform 0.15s ease;
 }
 
-/* Hover appearance */
 .add-cart-btn:hover {
   background: var(--red);
   color: var(--paper);
 }
 
-/* Press animation */
 .add-cart-btn:active {
   transform: scale(0.96);
 }
 
-/* Temporary appearance after a successful add */
 .add-cart-btn.added {
   background: var(--gold);
   border-color: var(--gold);
@@ -152,11 +122,7 @@
 }
 
 
-/* ==========================================================================
-   5. FLOATING CART BUTTON
-   Fixed to the bottom-right corner of the screen.
-   ========================================================================== */
-
+/* 5. FLOATING CART BUTTON */
 .cart-fab {
   position: fixed;
   right: 16px;
@@ -189,7 +155,6 @@
   transform: translateY(-2px);
 }
 
-/* Number of items currently in the cart */
 .cart-fab-count {
   display: flex;
   align-items: center;
@@ -209,11 +174,7 @@
 }
 
 
-/* ==========================================================================
-   6. CART OVERLAY
-   Darkens the page behind the open cart drawer.
-   ========================================================================== */
-
+/* 6. CART OVERLAY */
 .cart-overlay {
   position: fixed;
   inset: 0;
@@ -225,23 +186,16 @@
   transition: opacity 0.25s ease;
 }
 
-/* Visible state controlled by JavaScript */
 .cart-overlay.visible {
   opacity: 1;
 }
 
-/* Prevent the page behind the cart from scrolling */
 body.cart-open {
   overflow: hidden;
 }
 
 
-/* ==========================================================================
-   7. CART DRAWER
-   Mobile: slides up from the bottom.
-   Desktop: becomes a centered modal.
-   ========================================================================== */
-
+/* 7. CART DRAWER (mobile: slides up from the bottom) */
 .cart-drawer {
   position: fixed;
   left: 0;
@@ -265,17 +219,12 @@ body.cart-open {
   transition: transform 0.28s ease;
 }
 
-/* Open state controlled by JavaScript */
 .cart-drawer.open {
   transform: translateY(0);
 }
 
 
-/* ==========================================================================
-   8. CART HEADER
-   Contains the cart title and close button.
-   ========================================================================== */
-
+/* 8. CART HEADER */
 .cart-drawer-header {
   flex: 0 0 auto;
 
@@ -288,7 +237,6 @@ body.cart-open {
   border-bottom: 1px solid var(--line);
 }
 
-/* Cart title */
 .cart-drawer-header h2 {
   margin: 0;
 
@@ -296,7 +244,6 @@ body.cart-open {
   font-size: 1.2rem;
 }
 
-/* Close button */
 .cart-close-btn {
   width: 34px;
   height: 34px;
@@ -312,11 +259,7 @@ body.cart-open {
 }
 
 
-/* ==========================================================================
-   9. CART BODY AND ITEM LIST
-   The content below the header scrolls independently.
-   ========================================================================== */
-
+/* 9. CART BODY AND ITEM LIST */
 .cart-body {
   flex: 1 1 auto;
   min-height: 0;
@@ -325,7 +268,6 @@ body.cart-open {
   overscroll-behavior: contain;
 }
 
-/* Container for all selected cart items */
 .cart-items {
   display: flex;
   flex-direction: column;
@@ -335,10 +277,7 @@ body.cart-open {
 }
 
 
-/* ==========================================================================
-   10. INDIVIDUAL CART ITEM
-   ========================================================================== */
-
+/* 10. INDIVIDUAL CART ITEM */
 .cart-item {
   display: flex;
   align-items: center;
@@ -353,7 +292,6 @@ body.cart-open {
   border-radius: var(--r-md);
 }
 
-/* Dish name and unit price */
 .cart-item-info {
   flex: 1 1 auto;
   min-width: 0;
@@ -376,7 +314,6 @@ body.cart-open {
   font-size: 12px;
 }
 
-/* Quantity controls, subtotal, and Remove button */
 .cart-item-controls {
   flex: 0 0 auto;
 
@@ -387,17 +324,13 @@ body.cart-open {
 }
 
 
-/* ==========================================================================
-   11. QUANTITY CONTROLS
-   ========================================================================== */
-
+/* 11. QUANTITY CONTROLS */
 .cart-qty {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-/* Increase and decrease buttons */
 .cart-qty-btn {
   display: flex;
   align-items: center;
@@ -420,7 +353,6 @@ body.cart-open {
   cursor: pointer;
 }
 
-/* Quantity number */
 .cart-qty-value {
   min-width: 18px;
 
@@ -431,10 +363,7 @@ body.cart-open {
 }
 
 
-/* ==========================================================================
-   12. CART SUBTOTAL AND REMOVE BUTTON
-   ========================================================================== */
-
+/* 12. CART SUBTOTAL AND REMOVE BUTTON */
 .cart-item-subtotal {
   margin: 0;
 
@@ -460,11 +389,7 @@ body.cart-open {
 }
 
 
-/* ==========================================================================
-   13. EMPTY CART STATE
-   Shown when there are no items in the cart.
-   ========================================================================== */
-
+/* 13. EMPTY CART STATE */
 .cart-empty {
   padding: 40px 24px 44px;
 
@@ -472,7 +397,6 @@ body.cart-open {
   text-align: center;
 }
 
-/* Browse Menu button */
 .cart-browse-btn {
   padding: 10px 22px;
 
@@ -489,16 +413,11 @@ body.cart-open {
 }
 
 
-/* ==========================================================================
-   14. CHECKOUT FOOTER AND ORDER DETAILS
-   Contains Delivery/Pickup selection and customer information.
-   ========================================================================== */
-
+/* 14. CHECKOUT FOOTER AND ORDER DETAILS */
 .cart-footer {
   padding: 6px 18px calc(18px + env(safe-area-inset-bottom));
 }
 
-/* Main checkout details card */
 .order-details-box {
   position: relative;
 
@@ -511,7 +430,6 @@ body.cart-open {
   border-radius: var(--r-lg);
 }
 
-/* Decorative red stripe on the left of the details card */
 .order-details-box::before {
   content: "";
 
@@ -527,10 +445,7 @@ body.cart-open {
 }
 
 
-/* ==========================================================================
-   15. ORDER TYPE LABEL
-   ========================================================================== */
-
+/* 15. ORDER TYPE LABEL */
 .order-type-label {
   display: flex;
   align-items: center;
@@ -543,7 +458,6 @@ body.cart-open {
   font-weight: 600;
 }
 
-/* Gold indicator beside the label */
 .order-type-label-dot {
   width: 7px;
   height: 7px;
@@ -554,17 +468,13 @@ body.cart-open {
 }
 
 
-/* ==========================================================================
-   16. DELIVERY AND PICKUP BUTTONS
-   ========================================================================== */
-
+/* 16. DELIVERY AND PICKUP BUTTONS */
 .order-type-options {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 9px;
 }
 
-/* Default order type button */
 .order-type-btn {
   display: flex;
   flex-direction: column;
@@ -594,13 +504,11 @@ body.cart-open {
     transform 0.15s ease;
 }
 
-/* Emoji icon */
 .order-type-icon {
   font-size: 19px;
   line-height: 1;
 }
 
-/* Hover and press effects */
 .order-type-btn:hover {
   border-color: var(--red);
 }
@@ -609,7 +517,6 @@ body.cart-open {
   transform: scale(0.96);
 }
 
-/* Selected order type */
 .order-type-btn.active {
   background: var(--red);
   border-color: var(--red);
@@ -618,7 +525,6 @@ body.cart-open {
   box-shadow: 0 4px 12px rgba(175, 40, 40, 0.3);
 }
 
-/* Instruction shown before the customer chooses an order type */
 .order-type-hint {
   margin: 10px 2px 0;
 
@@ -628,10 +534,7 @@ body.cart-open {
 }
 
 
-/* ==========================================================================
-   17. CHECKOUT DIVIDER
-   ========================================================================== */
-
+/* 17. CHECKOUT DIVIDER */
 .order-details-divider {
   height: 1px;
   margin: 14px 2px 12px;
@@ -640,11 +543,7 @@ body.cart-open {
 }
 
 
-/* ==========================================================================
-   18. CUSTOMER INPUT FIELDS
-   Includes name, phone, delivery details, and optional notes.
-   ========================================================================== */
-
+/* 18. CUSTOMER INPUT FIELDS (name, phone, area, address, notes) */
 .cart-customer-fields,
 .cart-group {
   display: flex;
@@ -652,7 +551,6 @@ body.cart-open {
   gap: 8px;
 }
 
-/* Labels above fields */
 .cart-input-label {
   margin-bottom: -4px;
 
@@ -661,7 +559,6 @@ body.cart-open {
   font-weight: 600;
 }
 
-/* Shared input and textarea styles */
 .cart-input {
   width: 100%;
   min-height: 42px;
@@ -677,10 +574,27 @@ body.cart-open {
   font-size: 13.5px;
 }
 
-/* Keyboard focus */
 .cart-input:focus-visible {
   outline: 3px solid var(--red);
   outline-offset: 1px;
+}
+
+/* Area dropdown (Town / Upanga / Kariakoo / Other area) */
+.cart-select {
+  appearance: none;
+  -webkit-appearance: none;
+
+  padding-right: 34px;
+  cursor: pointer;
+
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--red) 50%),
+    linear-gradient(135deg, var(--red) 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) 50%,
+    calc(100% - 13px) 50%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
 }
 
 /* Optional customer notes */
@@ -693,23 +607,17 @@ body.cart-open {
   line-height: 1.45;
 }
 
-/* Placeholder text */
 .cart-textarea::placeholder {
   color: var(--ink-soft);
   opacity: 0.8;
 }
 
 
-/* ==========================================================================
-   19. PRICE SUMMARY
-   Shows food total, delivery fee, and final total.
-   ========================================================================== */
-
+/* 19. PRICE SUMMARY (Food Total + Delivery Fee = Total) */
 .cart-total-breakdown {
   margin-bottom: 12px;
 }
 
-/* Individual total row */
 .cart-total-line {
   display: flex;
   align-items: center;
@@ -721,7 +629,11 @@ body.cart-open {
   font-size: 14px;
 }
 
-/* Final total row */
+/* Long text such as "TSh 20,000/= + fee" wraps neatly on the right */
+.cart-total-line span:last-child {
+  text-align: right;
+}
+
 .cart-grand-total {
   margin-top: 6px;
   padding-top: 10px;
@@ -735,10 +647,7 @@ body.cart-open {
 }
 
 
-/* ==========================================================================
-   20. WHATSAPP ORDER BUTTON
-   ========================================================================== */
-
+/* 20. WHATSAPP ORDER BUTTON */
 .whatsapp-btn {
   display: block;
 
@@ -760,18 +669,15 @@ body.cart-open {
   cursor: pointer;
 }
 
-/* Disabled until the required order details are complete */
 .whatsapp-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-/* Hover effect for an enabled button */
 .whatsapp-btn:not(:disabled):hover {
   filter: brightness(1.05);
 }
 
-/* Instructions below the WhatsApp button */
 .whatsapp-hint {
   margin: 0 0 10px;
 
@@ -782,7 +688,6 @@ body.cart-open {
   text-align: center;
 }
 
-/* Clear Cart button */
 .clear-cart-btn {
   display: block;
 
@@ -800,11 +705,7 @@ body.cart-open {
 }
 
 
-/* ==========================================================================
-   21. DESKTOP CART MODAL
-   On screens 700px and wider, the drawer appears in the center.
-   ========================================================================== */
-
+/* 21. DESKTOP CART MODAL (700px and wider) */
 @media (min-width: 700px) {
 
   .cart-drawer {
@@ -826,7 +727,6 @@ body.cart-open {
       opacity 0.25s ease;
   }
 
-  /* Fully visible desktop modal */
   .cart-drawer.open {
     transform: translate(-50%, 50%) scale(1);
     opacity: 1;
@@ -834,36 +734,27 @@ body.cart-open {
 }
 
 
-/* ==========================================================================
-   22. SMALL MOBILE SCREENS
-   Reduces spacing and button sizes on screens 380px wide or narrower.
-   ========================================================================== */
-
+/* 22. SMALL MOBILE SCREENS (380px and narrower) */
 @media (max-width: 380px) {
 
-  /* Floating cart button */
   .cart-fab {
     padding: 11px 16px;
     font-size: 13.5px;
   }
 
-  /* Cart item spacing */
   .cart-items {
     padding: 10px 14px;
   }
 
-  /* Checkout footer spacing */
   .cart-footer {
     padding-left: 14px;
     padding-right: 14px;
   }
 
-  /* Order details card */
   .order-details-box {
     padding: 13px 12px 12px;
   }
 
-  /* Delivery/Pickup button text */
   .order-type-btn {
     font-size: 10.5px;
   }
