@@ -1,13 +1,11 @@
-
 /* ==========================================================================
    BARAZA RESTAURANT & CAFE
    Online Ordering Script — index2.html
 
-   Main responsibilities:
    1. Render the menu and category navigation.
    2. Handle menu choices such as Fried/BBQ and side dishes.
-   3. Manage the shopping cart and save it in localStorage.
-   4. Handle Delivery and Pickup checkout.
+   3. Manage the cart (saved in localStorage).
+   4. Handle Delivery (with area + delivery fee) and Pickup checkout.
    5. Calculate totals and prepare WhatsApp orders.
    6. Open and close the cart drawer.
    ========================================================================== */
@@ -15,32 +13,35 @@
 
 /* ==========================================================================
    1. SETTINGS
-   Edit these values when restaurant details change.
    ========================================================================== */
 
 const WHATSAPP_NUMBER = "255753423253";
 const RESTAURANT_NAME = "Baraza Restaurant & Cafe";
 const CART_STORAGE_KEY = "barazaCart";
 
+// Delivery areas. fee: null means "to be confirmed".
+const DELIVERY_AREAS = {
+  town:     { label: "Town",       fee: 3000 },
+  upanga:   { label: "Upanga",     fee: 3000 },
+  kariakoo: { label: "Kariakoo",   fee: 3000 },
+  other:    { label: "Other area", fee: null }
+};
+
 
 /* ==========================================================================
    2. SHARED MENU OPTIONS
    ========================================================================== */
 
-// Side dishes customers can choose for applicable meals.
 const SIDES = ["Chips", "Rice", "Noodles", "Naan"];
 
-// Description used by meals that include a choice of side.
 const SERVED_WITH_SIDES =
   "Served with chips, rice, noodles or naan.";
 
-// Labels used in the checkout form and WhatsApp message.
 const ORDER_TYPE_LABELS = {
   delivery: "Delivery",
   pickup: "Pickup"
 };
 
-// Options that customers must select before adding certain dishes.
 const FRIED_OR_BBQ = [
   {
     label: "Fried or BBQ",
@@ -58,13 +59,7 @@ const PROTEIN_OPTIONS = [
 
 /* ==========================================================================
    3. MENU DATA
-   Edit dish names, prices, descriptions, and options here.
-
-   Menu item format:
-   ["Dish name", price]
-   ["Dish name", price, requiredOptions]
-
-   The list() helper converts these rows into menu item objects.
+   Item format: ["Dish name", price] or ["Dish name", price, requiredOptions]
    ========================================================================== */
 
 function list(rows, description) {
@@ -78,10 +73,6 @@ function list(rows, description) {
 
 
 const MENU_DATA = [
-
-  /* ------------------------------------------------------------------------
-     BBQ COMBOS
-     ------------------------------------------------------------------------ */
 
   {
     id: "bbq-combos",
@@ -98,11 +89,6 @@ const MENU_DATA = [
       }
     ]
   },
-
-
-  /* ------------------------------------------------------------------------
-     STARTERS
-     ------------------------------------------------------------------------ */
 
   {
     id: "starters",
@@ -131,11 +117,6 @@ const MENU_DATA = [
     ])
   },
 
-
-  /* ------------------------------------------------------------------------
-     KUKU NUSU
-     ------------------------------------------------------------------------ */
-
   {
     id: "kuku-nusu",
     name: "Kuku Nusu",
@@ -151,11 +132,6 @@ const MENU_DATA = [
     ], SERVED_WITH_SIDES)
   },
 
-
-  /* ------------------------------------------------------------------------
-     CHICKEN MZINGA
-     ------------------------------------------------------------------------ */
-
   {
     id: "chicken-mzinga",
     name: "Chicken Mzinga",
@@ -169,11 +145,6 @@ const MENU_DATA = [
       ["Chilly Milly", 26000]
     ], SERVED_WITH_SIDES)
   },
-
-
-  /* ------------------------------------------------------------------------
-     SEAFOOD
-     ------------------------------------------------------------------------ */
 
   {
     id: "seafood",
@@ -190,11 +161,6 @@ const MENU_DATA = [
     ], SERVED_WITH_SIDES)
   },
 
-
-  /* ------------------------------------------------------------------------
-     CHIPS
-     ------------------------------------------------------------------------ */
-
   {
     id: "chips",
     name: "Chips",
@@ -209,11 +175,6 @@ const MENU_DATA = [
     ])
   },
 
-
-  /* ------------------------------------------------------------------------
-     NAAN
-     ------------------------------------------------------------------------ */
-
   {
     id: "naan",
     name: "Naan",
@@ -225,11 +186,6 @@ const MENU_DATA = [
       ["Chilly Naan", 3000]
     ])
   },
-
-
-  /* ------------------------------------------------------------------------
-     NOODLES
-     ------------------------------------------------------------------------ */
 
   {
     id: "noodles",
@@ -243,11 +199,6 @@ const MENU_DATA = [
       ["Fish Hakka Noodles", 15000]
     ])
   },
-
-
-  /* ------------------------------------------------------------------------
-     RICE
-     ------------------------------------------------------------------------ */
 
   {
     id: "rice",
@@ -264,11 +215,6 @@ const MENU_DATA = [
       ["Schezwan Fried Rice", 10000, PROTEIN_OPTIONS]
     ])
   },
-
-
-  /* ------------------------------------------------------------------------
-     DRINKS
-     ------------------------------------------------------------------------ */
 
   {
     id: "drinks",
@@ -289,24 +235,19 @@ const MENU_DATA = [
 
 /* ==========================================================================
    4. GENERAL HELPERS
-   Small functions reused throughout the script.
    ========================================================================== */
 
-// Get an HTML element using its ID.
 const $ = (id) => document.getElementById(id);
 
-// Format an amount in Tanzanian Shillings.
 function formatPrice(amount) {
   return "TSh " + Number(amount).toLocaleString("en-US") + "/=";
 }
 
-// Read and trim the value of an input field.
 function getInputValue(id) {
   const input = $(id);
   return input ? input.value.trim() : "";
 }
 
-// Create an HTML element and optionally assign a class.
 function createElement(tag, className = "") {
   const element = document.createElement(tag);
 
@@ -317,11 +258,29 @@ function createElement(tag, className = "") {
   return element;
 }
 
-// Create a text element without interpreting the text as HTML.
 function createTextElement(tag, className, text) {
   const element = createElement(tag, className);
   element.textContent = text;
   return element;
+}
+
+// The delivery area chosen in the dropdown (or null if none).
+function getDeliveryArea() {
+  return DELIVERY_AREAS[getInputValue("customer-area")] || null;
+}
+
+// Area text used in the WhatsApp message.
+function getAreaText() {
+  const area = getDeliveryArea();
+
+  if (!area) return "";
+
+  if (area.fee === null) {
+    const typed = getInputValue("customer-other-area");
+    return typed ? "Other area: " + typed : "Other area";
+  }
+
+  return area.label;
 }
 
 
@@ -329,18 +288,15 @@ function createTextElement(tag, className, text) {
    5. APPLICATION STATE
    ========================================================================== */
 
-// Each cart item contains:
-// { key, name, price, qty }
-
+// Each cart item: { key, name, price, qty }
 let cart = [];
 
-// Possible values: "delivery", "pickup", or null.
+// "delivery", "pickup", or null.
 let orderType = null;
 
 
 /* ==========================================================================
    6. RENDER CATEGORY NAVIGATION
-   Creates the horizontal category buttons.
    ========================================================================== */
 
 function renderCategoryNavigation() {
@@ -351,11 +307,7 @@ function renderCategoryNavigation() {
   navigation.replaceChildren();
 
   MENU_DATA.forEach((category) => {
-    const button = createTextElement(
-      "button",
-      "nav-pill",
-      category.name
-    );
+    const button = createTextElement("button", "nav-pill", category.name);
 
     button.type = "button";
     button.dataset.target = category.id;
@@ -372,7 +324,6 @@ function renderCategoryNavigation() {
 }
 
 
-// Scroll to a category, allowing for the sticky navigation bar.
 function scrollToCategory(categoryId) {
   const section = $(categoryId);
   const navigation = document.querySelector(".category-nav");
@@ -395,7 +346,6 @@ function scrollToCategory(categoryId) {
 
 /* ==========================================================================
    7. RENDER MENU
-   Creates category sections, dishes, choices, and Add to Cart buttons.
    ========================================================================== */
 
 function renderMenu() {
@@ -409,12 +359,8 @@ function renderMenu() {
     const section = createElement("section", "category-section");
 
     section.id = category.id;
-    section.setAttribute(
-      "aria-labelledby",
-      category.id + "-heading"
-    );
+    section.setAttribute("aria-labelledby", category.id + "-heading");
 
-    // Category heading.
     const heading = createTextElement(
       "h2",
       "category-heading",
@@ -424,7 +370,6 @@ function renderMenu() {
     heading.id = category.id + "-heading";
     section.appendChild(heading);
 
-    // List containing the menu cards.
     const itemList = createElement("div", "item-list");
 
     category.items.forEach((item) => {
@@ -437,7 +382,6 @@ function renderMenu() {
 }
 
 
-// Build one menu item card.
 function createMenuItem(category, item) {
   const card = createElement("article", "menu-item");
 
@@ -445,36 +389,26 @@ function createMenuItem(category, item) {
   card.dataset.name = item.name;
   card.dataset.price = String(item.price);
 
-  // Dish name, description, and price.
   const top = createElement("div", "menu-item-top");
   const info = createElement("div", "menu-item-info");
 
-  info.appendChild(
-    createTextElement("h3", "menu-item-name", item.name)
-  );
+  info.appendChild(createTextElement("h3", "menu-item-name", item.name));
 
   if (item.desc) {
-    info.appendChild(
-      createTextElement("p", "menu-item-desc", item.desc)
-    );
+    info.appendChild(createTextElement("p", "menu-item-desc", item.desc));
   }
 
   top.appendChild(info);
 
   top.appendChild(
-    createTextElement(
-      "div",
-      "menu-item-price",
-      formatPrice(item.price)
-    )
+    createTextElement("div", "menu-item-price", formatPrice(item.price))
   );
 
   card.appendChild(top);
 
-  // Required choices and Add to Cart button.
   const actions = createElement("div", "menu-item-actions");
 
-  // Add any dish-specific choices first.
+  // Dish-specific choices first.
   (item.opts || []).forEach((option) => {
     actions.appendChild(
       createChoiceSelect(
@@ -487,7 +421,7 @@ function createMenuItem(category, item) {
     );
   });
 
-  // Add the side selector when the category requires it.
+  // Side selector when the category requires it.
   if (category.sides) {
     actions.appendChild(
       createChoiceSelect(
@@ -501,18 +435,10 @@ function createMenuItem(category, item) {
     );
   }
 
-  // Add-to-cart button.
-  const addButton = createTextElement(
-    "button",
-    "add-cart-btn",
-    "+ Add to Cart"
-  );
+  const addButton = createTextElement("button", "add-cart-btn", "+ Add to Cart");
 
   addButton.type = "button";
-  addButton.setAttribute(
-    "aria-label",
-    "Add " + item.name + " to cart"
-  );
+  addButton.setAttribute("aria-label", "Add " + item.name + " to cart");
 
   actions.appendChild(addButton);
   card.appendChild(actions);
@@ -521,7 +447,6 @@ function createMenuItem(category, item) {
 }
 
 
-// Create a dropdown for a required dish choice or side.
 function createChoiceSelect(
   label,
   values,
@@ -530,27 +455,18 @@ function createChoiceSelect(
   itemName,
   isSide = false
 ) {
-  const select = createElement(
-    "select",
-    "side-select " + extraClass
-  );
+  const select = createElement("select", "side-select " + extraClass);
 
   select.setAttribute(
     "aria-label",
     (isSide ? "Choose a side for " : label + " for ") + itemName
   );
 
-  // First option asks the customer to make a selection.
-  const prompt = createTextElement(
-    "option",
-    "",
-    placeholder
-  );
+  const prompt = createTextElement("option", "", placeholder);
 
   prompt.value = "";
   select.appendChild(prompt);
 
-  // Add available choices as text, not HTML.
   values.forEach((value) => {
     const option = createTextElement(
       "option",
@@ -572,7 +488,6 @@ function createChoiceSelect(
 
 /* ==========================================================================
    8. ADD ITEMS TO CART
-   Validates required choices before adding a dish.
    ========================================================================== */
 
 function handleMenuClick(event) {
@@ -584,13 +499,9 @@ function handleMenuClick(event) {
 
   if (!card) return;
 
-  const optionSelects = Array.from(
-    card.querySelectorAll(".opt-select")
-  );
-
+  const optionSelects = Array.from(card.querySelectorAll(".opt-select"));
   const sideSelect = card.querySelector(".side-pick");
 
-  // Required selections must be completed in order.
   const requiredSelections = optionSelects.concat(
     sideSelect ? [sideSelect] : []
   );
@@ -605,14 +516,10 @@ function handleMenuClick(event) {
     return;
   }
 
-  // Build the selected dish name, including chosen options.
   let selectedName = card.dataset.name;
 
   if (optionSelects.length) {
-    const choices = optionSelects
-      .map((select) => select.value)
-      .join(", ");
-
+    const choices = optionSelects.map((select) => select.value).join(", ");
     selectedName += " (" + choices + ")";
   }
 
@@ -622,12 +529,11 @@ function handleMenuClick(event) {
 
   const categoryId = card.dataset.cat;
   const price = Number(card.dataset.price);
-
   const cartKey = categoryId + "::" + selectedName;
 
   addToCart(cartKey, selectedName, price);
 
-  // Reset choices so the customer can make another selection.
+  // Reset choices for the next selection.
   card.querySelectorAll("select").forEach((select) => {
     select.selectedIndex = 0;
   });
@@ -645,7 +551,6 @@ function handleMenuClick(event) {
 
 /* ==========================================================================
    9. CART STORAGE
-   Saves the cart in the browser so it can survive page reloads.
    ========================================================================== */
 
 function loadCart() {
@@ -658,7 +563,6 @@ function loadCart() {
 
     if (!Array.isArray(parsed)) return [];
 
-    // Reject malformed or invalid cart entries.
     return parsed.filter((item) => {
       return (
         item &&
@@ -674,7 +578,6 @@ function loadCart() {
     });
 
   } catch (error) {
-    // The cart can still be used for the current session.
     return [];
   }
 }
@@ -682,35 +585,24 @@ function loadCart() {
 
 function saveCart() {
   try {
-    localStorage.setItem(
-      CART_STORAGE_KEY,
-      JSON.stringify(cart)
-    );
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
   } catch (error) {
-    // Storage may be unavailable; keep the in-memory cart working.
+    // Storage unavailable; the in-memory cart still works.
   }
 }
 
 
 /* ==========================================================================
    10. CART OPERATIONS
-   Add, increase, decrease, remove, and clear items.
    ========================================================================== */
 
 function addToCart(key, name, price) {
-  const existingItem = cart.find(
-    (item) => item.key === key
-  );
+  const existingItem = cart.find((item) => item.key === key);
 
   if (existingItem) {
     existingItem.qty += 1;
   } else {
-    cart.push({
-      key,
-      name,
-      price,
-      qty: 1
-    });
+    cart.push({ key, name, price, qty: 1 });
   }
 
   refreshCart();
@@ -718,18 +610,14 @@ function addToCart(key, name, price) {
 
 
 function changeQuantity(key, amount) {
-  const item = cart.find(
-    (cartItem) => cartItem.key === key
-  );
+  const item = cart.find((cartItem) => cartItem.key === key);
 
   if (!item) return;
 
   item.qty += amount;
 
   if (item.qty <= 0) {
-    cart = cart.filter(
-      (cartItem) => cartItem.key !== key
-    );
+    cart = cart.filter((cartItem) => cartItem.key !== key);
   }
 
   refreshCart();
@@ -737,10 +625,7 @@ function changeQuantity(key, amount) {
 
 
 function removeFromCart(key) {
-  cart = cart.filter(
-    (item) => item.key !== key
-  );
-
+  cart = cart.filter((item) => item.key !== key);
   refreshCart();
 }
 
@@ -748,9 +633,7 @@ function removeFromCart(key) {
 function clearCart() {
   if (!cart.length) return;
 
-  const confirmed = window.confirm(
-    "Are you sure you want to clear your cart?"
-  );
+  const confirmed = window.confirm("Are you sure you want to clear your cart?");
 
   if (!confirmed) return;
 
@@ -763,27 +646,17 @@ function clearCart() {
    11. CART CALCULATIONS
    ========================================================================== */
 
-// Total price of all selected food.
 function calculateFoodTotal() {
-  return cart.reduce(
-    (total, item) => total + item.price * item.qty,
-    0
-  );
+  return cart.reduce((total, item) => total + item.price * item.qty, 0);
 }
 
-
-// Total number of items, including quantities.
 function calculateCartCount() {
-  return cart.reduce(
-    (total, item) => total + item.qty,
-    0
-  );
+  return cart.reduce((total, item) => total + item.qty, 0);
 }
 
 
 /* ==========================================================================
    12. REFRESH THE CART
-   Updates saved data, item list, totals, count, and checkout button.
    ========================================================================== */
 
 function refreshCart() {
@@ -795,7 +668,6 @@ function refreshCart() {
 }
 
 
-// Update the floating cart button and accessible label.
 function updateCartCount() {
   const count = calculateCartCount();
   const countElement = $("cart-count");
@@ -808,9 +680,7 @@ function updateCartCount() {
   if (toggleButton) {
     toggleButton.setAttribute(
       "aria-label",
-      "Open cart, " +
-        count +
-        (count === 1 ? " item" : " items")
+      "Open cart, " + count + (count === 1 ? " item" : " items")
     );
   }
 }
@@ -818,7 +688,6 @@ function updateCartCount() {
 
 /* ==========================================================================
    13. RENDER CART ITEMS
-   Creates the selected items and quantity controls.
    ========================================================================== */
 
 function renderCartItems() {
@@ -837,27 +706,17 @@ function renderCartItems() {
   if (isEmpty) return;
 
   cart.forEach((item) => {
-    itemsContainer.appendChild(
-      createCartItem(item)
-    );
+    itemsContainer.appendChild(createCartItem(item));
   });
 }
 
 
-// Build one selected item inside the cart drawer.
 function createCartItem(item) {
   const row = createElement("div", "cart-item");
 
-  // Item information.
   const info = createElement("div", "cart-item-info");
 
-  info.appendChild(
-    createTextElement(
-      "p",
-      "cart-item-name",
-      item.name
-    )
-  );
+  info.appendChild(createTextElement("p", "cart-item-name", item.name));
 
   info.appendChild(
     createTextElement(
@@ -869,17 +728,8 @@ function createCartItem(item) {
 
   row.appendChild(info);
 
-
-  // Quantity controls and subtotal.
-  const controls = createElement(
-    "div",
-    "cart-item-controls"
-  );
-
-  const quantityControls = createElement(
-    "div",
-    "cart-qty"
-  );
+  const controls = createElement("div", "cart-item-controls");
+  const quantityControls = createElement("div", "cart-qty");
 
   const decreaseButton = createQuantityButton(
     "−",
@@ -909,8 +759,6 @@ function createCartItem(item) {
 
   controls.appendChild(quantityControls);
 
-
-  // Subtotal for this cart item.
   controls.appendChild(
     createTextElement(
       "p",
@@ -919,22 +767,13 @@ function createCartItem(item) {
     )
   );
 
-
-  // Remove item button.
-  const removeButton = createTextElement(
-    "button",
-    "cart-remove-btn",
-    "Remove"
-  );
+  const removeButton = createTextElement("button", "cart-remove-btn", "Remove");
 
   removeButton.type = "button";
   removeButton.dataset.action = "remove";
   removeButton.dataset.key = item.key;
 
-  removeButton.setAttribute(
-    "aria-label",
-    "Remove " + item.name + " from cart"
-  );
+  removeButton.setAttribute("aria-label", "Remove " + item.name + " from cart");
 
   controls.appendChild(removeButton);
   row.appendChild(controls);
@@ -943,27 +782,14 @@ function createCartItem(item) {
 }
 
 
-// Create a button that increases or decreases item quantity.
-function createQuantityButton(
-  label,
-  action,
-  item,
-  accessibleLabel
-) {
-  const button = createTextElement(
-    "button",
-    "cart-qty-btn",
-    label
-  );
+function createQuantityButton(label, action, item, accessibleLabel) {
+  const button = createTextElement("button", "cart-qty-btn", label);
 
   button.type = "button";
   button.dataset.action = action;
   button.dataset.key = item.key;
 
-  button.setAttribute(
-    "aria-label",
-    accessibleLabel
-  );
+  button.setAttribute("aria-label", accessibleLabel);
 
   return button;
 }
@@ -971,30 +797,37 @@ function createQuantityButton(
 
 /* ==========================================================================
    14. PRICE TOTALS
-   Delivery charges remain subject to confirmation by the restaurant.
+   Food Total + Delivery Fee = Total.
+   Town / Upanga / Kariakoo = TSh 3,000. Other area = to be confirmed.
    ========================================================================== */
 
 function renderTotals() {
   const foodTotal = calculateFoodTotal();
   const isDelivery = orderType === "delivery";
+  const area = isDelivery ? getDeliveryArea() : null;
 
-  $("cart-food-total-value").textContent =
-    formatPrice(foodTotal);
+  let feeText = "Select your area";
+  let totalText = formatPrice(foodTotal);
 
+  if (area && area.fee !== null) {
+    // Fixed fee: add it to the food total.
+    feeText = formatPrice(area.fee);
+    totalText = formatPrice(foodTotal + area.fee);
+  } else if (area) {
+    // Other area: fee to be confirmed.
+    feeText = "To be confirmed";
+    totalText = formatPrice(foodTotal) + " + fee";
+  }
+
+  $("cart-food-total-value").textContent = formatPrice(foodTotal);
   $("cart-delivery-line").hidden = !isDelivery;
-
-  $("cart-delivery-fee-value").textContent =
-    "To be confirmed";
-
-  $("cart-total-value").textContent = isDelivery
-    ? formatPrice(foodTotal) + " + fee"
-    : formatPrice(foodTotal);
+  $("cart-delivery-fee-value").textContent = feeText;
+  $("cart-total-value").textContent = totalText;
 }
 
 
 /* ==========================================================================
    15. DELIVERY / PICKUP CHECKOUT
-   Controls which customer fields are visible and validates the order.
    ========================================================================== */
 
 function setOrderType(type) {
@@ -1006,37 +839,37 @@ function setOrderType(type) {
 }
 
 
-// Show or hide fields based on the selected order type.
+// Show or hide fields based on the order type and chosen area.
 function syncOrderForm() {
   const selectedType = orderType;
 
   $("cart-customer-fields").hidden = !selectedType;
   $("order-type-hint").hidden = Boolean(selectedType);
 
-  $("delivery-fields").hidden =
-    selectedType !== "delivery";
+  $("delivery-fields").hidden = selectedType !== "delivery";
 
-  // Update selected button styling and accessibility state.
-  document.querySelectorAll(".order-type-btn").forEach(
-    (button) => {
-      const isSelected =
-        button.dataset.type === selectedType;
+  // "Type your area" box appears only for Other area.
+  const area = getDeliveryArea();
 
-      button.classList.toggle("active", isSelected);
-
-      button.setAttribute(
-        "aria-checked",
-        isSelected ? "true" : "false"
-      );
-    }
+  $("customer-other-area").hidden = !(
+    selectedType === "delivery" &&
+    area &&
+    area.fee === null
   );
+
+  document.querySelectorAll(".order-type-btn").forEach((button) => {
+    const isSelected = button.dataset.type === selectedType;
+
+    button.classList.toggle("active", isSelected);
+
+    button.setAttribute("aria-checked", isSelected ? "true" : "false");
+  });
 
   renderTotals();
   updateSendButton();
 }
 
 
-// Check whether all required information has been entered.
 function isOrderValid() {
   if (!cart.length || !orderType) {
     return false;
@@ -1050,17 +883,21 @@ function isOrderValid() {
   }
 
   if (orderType === "delivery") {
-    return Boolean(
-      getInputValue("customer-area") &&
-      getInputValue("customer-address")
-    );
+    const area = getDeliveryArea();
+
+    if (!area || !getInputValue("customer-address")) return false;
+
+    if (area.fee === null && !getInputValue("customer-other-area")) {
+      return false;
+    }
+
+    return true;
   }
 
   return orderType === "pickup";
 }
 
 
-// Enable WhatsApp ordering only when the order is valid.
 function updateSendButton() {
   const button = $("whatsapp-order-btn");
 
@@ -1070,7 +907,6 @@ function updateSendButton() {
 }
 
 
-// Clear checkout fields after an order is submitted.
 function resetOrderForm() {
   orderType = null;
 
@@ -1078,6 +914,7 @@ function resetOrderForm() {
     "customer-name",
     "customer-contact",
     "customer-area",
+    "customer-other-area",
     "customer-address",
     "customer-notes"
   ].forEach((id) => {
@@ -1096,12 +933,12 @@ function resetOrderForm() {
 
 /* ==========================================================================
    16. WHATSAPP ORDER MESSAGE
-   Formats the customer's selected items and checkout details.
    ========================================================================== */
 
 function buildWhatsAppMessage() {
   const foodTotal = calculateFoodTotal();
   const notes = getInputValue("customer-notes");
+  const area = getDeliveryArea();
 
   const lines = [
     "Hello " + RESTAURANT_NAME + ",",
@@ -1110,7 +947,6 @@ function buildWhatsAppMessage() {
     ""
   ];
 
-  // Add each selected dish and its subtotal.
   cart.forEach((item) => {
     lines.push(
       item.qty +
@@ -1122,31 +958,15 @@ function buildWhatsAppMessage() {
   });
 
   lines.push("");
-  lines.push(
-    "Order type: " + ORDER_TYPE_LABELS[orderType]
-  );
+  lines.push("Order type: " + ORDER_TYPE_LABELS[orderType]);
+  lines.push("Name: " + getInputValue("customer-name"));
+  lines.push("Contact: " + getInputValue("customer-contact"));
 
-  lines.push(
-    "Name: " + getInputValue("customer-name")
-  );
-
-  lines.push(
-    "Contact: " + getInputValue("customer-contact")
-  );
-
-  // Include the delivery address when Delivery is selected.
   if (orderType === "delivery") {
-    lines.push(
-      "Delivery area: " + getInputValue("customer-area")
-    );
-
-    lines.push(
-      "Delivery address: " +
-      getInputValue("customer-address")
-    );
+    lines.push("Delivery area: " + getAreaText());
+    lines.push("Delivery address: " + getInputValue("customer-address"));
   }
 
-  // Include additional instructions only when provided.
   if (notes) {
     lines.push("Additional note: " + notes);
   }
@@ -1154,9 +974,11 @@ function buildWhatsAppMessage() {
   lines.push("");
   lines.push("Food Total: " + formatPrice(foodTotal));
 
-  if (orderType === "delivery") {
+  if (orderType === "delivery" && area && area.fee !== null) {
+    lines.push("Delivery Fee: " + formatPrice(area.fee));
+    lines.push("Total: " + formatPrice(foodTotal + area.fee));
+  } else if (orderType === "delivery") {
     lines.push("Delivery Fee: To be confirmed");
-
     lines.push(
       "Total: " +
       formatPrice(foodTotal) +
@@ -1173,7 +995,6 @@ function buildWhatsAppMessage() {
 }
 
 
-// Open WhatsApp with the prepared order message.
 function sendOrderToWhatsApp() {
   if (!isOrderValid()) return;
 
@@ -1185,14 +1006,9 @@ function sendOrderToWhatsApp() {
     "?text=" +
     encodeURIComponent(message);
 
-  // Open WhatsApp directly from the customer's button click.
-  window.open(
-    whatsappUrl,
-    "_blank",
-    "noopener"
-  );
+  window.open(whatsappUrl, "_blank", "noopener");
 
-  // Preserve the original behavior: clear the cart after opening.
+  // Clear the cart after opening WhatsApp.
   cart = [];
 
   refreshCart();
@@ -1203,7 +1019,6 @@ function sendOrderToWhatsApp() {
 
 /* ==========================================================================
    17. CART DRAWER
-   Opens and closes the cart panel and its background overlay.
    ========================================================================== */
 
 function openCart() {
@@ -1231,7 +1046,6 @@ function closeCart() {
 
   document.body.classList.remove("cart-open");
 
-  // Wait for the closing animation before hiding the elements.
   setTimeout(() => {
     overlay.hidden = true;
     drawer.hidden = true;
@@ -1241,166 +1055,91 @@ function closeCart() {
 
 /* ==========================================================================
    18. EVENT LISTENERS
-   Connects page buttons, form fields, and cart controls to their functions.
    ========================================================================== */
 
 function setupEvents() {
-  // Add-to-cart buttons in the menu.
-  $("menu-content").addEventListener(
-    "click",
-    handleMenuClick
-  );
+  $("menu-content").addEventListener("click", handleMenuClick);
 
+  $("cart-toggle-btn").addEventListener("click", openCart);
+  $("cart-close-btn").addEventListener("click", closeCart);
+  $("cart-overlay").addEventListener("click", closeCart);
+  $("cart-browse-btn").addEventListener("click", closeCart);
 
-  // Open and close the cart.
-  $("cart-toggle-btn").addEventListener(
-    "click",
-    openCart
-  );
+  $("clear-cart-btn").addEventListener("click", clearCart);
+  $("whatsapp-order-btn").addEventListener("click", sendOrderToWhatsApp);
 
-  $("cart-close-btn").addEventListener(
-    "click",
-    closeCart
-  );
+  // Delivery / Pickup selection.
+  $("order-type-options").addEventListener("click", (event) => {
+    const button = event.target.closest(".order-type-btn");
 
-  $("cart-overlay").addEventListener(
-    "click",
-    closeCart
-  );
+    if (!button) return;
 
-  $("cart-browse-btn").addEventListener(
-    "click",
-    closeCart
-  );
+    setOrderType(button.dataset.type);
+  });
 
+  // Area dropdown: update the delivery fee, total and "type your area" box.
+  $("customer-area").addEventListener("change", syncOrderForm);
 
-  // Cart actions.
-  $("clear-cart-btn").addEventListener(
-    "click",
-    clearCart
-  );
+  // Quantity changes and item removal.
+  $("cart-items").addEventListener("click", (event) => {
+    const button = event.target.closest("button[data-action]");
 
-  $("whatsapp-order-btn").addEventListener(
-    "click",
-    sendOrderToWhatsApp
-  );
+    if (!button) return;
 
+    const action = button.dataset.action;
+    const key = button.dataset.key;
 
-  // Handle Delivery and Pickup selection.
-  $("order-type-options").addEventListener(
-    "click",
-    (event) => {
-      const button = event.target.closest(
-        ".order-type-btn"
-      );
-
-      if (!button) return;
-
-      setOrderType(button.dataset.type);
+    if (action === "increase") {
+      changeQuantity(key, 1);
+    } else if (action === "decrease") {
+      changeQuantity(key, -1);
+    } else if (action === "remove") {
+      removeFromCart(key);
     }
-  );
+  });
 
+  // Auto-grow the notes field.
+  $("customer-notes").addEventListener("input", (event) => {
+    const textarea = event.target;
 
-  // Handle quantity changes and item removal.
-  $("cart-items").addEventListener(
-    "click",
-    (event) => {
-      const button = event.target.closest(
-        "button[data-action]"
-      );
+    textarea.style.height = "auto";
+    textarea.style.height = textarea.scrollHeight + "px";
+  });
 
-      if (!button) return;
+  // Recheck checkout requirements whenever fields change.
+  $("cart-footer").addEventListener("input", updateSendButton);
+  $("cart-footer").addEventListener("change", updateSendButton);
 
-      const action = button.dataset.action;
-      const key = button.dataset.key;
-
-      if (action === "increase") {
-        changeQuantity(key, 1);
-      } else if (action === "decrease") {
-        changeQuantity(key, -1);
-      } else if (action === "remove") {
-        removeFromCart(key);
-      }
+  // Escape closes the cart.
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !$("cart-drawer").hidden) {
+      closeCart();
     }
-  );
-
-
-  // Automatically adjust the height of the optional notes field.
-  $("customer-notes").addEventListener(
-    "input",
-    (event) => {
-      const textarea = event.target;
-
-      textarea.style.height = "auto";
-      textarea.style.height =
-        textarea.scrollHeight + "px";
-    }
-  );
-
-
-  // Recheck checkout requirements whenever customer fields change.
-  $("cart-footer").addEventListener(
-    "input",
-    updateSendButton
-  );
-
-  $("cart-footer").addEventListener(
-    "change",
-    updateSendButton
-  );
-
-
-  // Allow the Escape key to close the cart drawer.
-  document.addEventListener(
-    "keydown",
-    (event) => {
-      if (
-        event.key === "Escape" &&
-        !$("cart-drawer").hidden
-      ) {
-        closeCart();
-      }
-    }
-  );
+  });
 }
 
 
 /* ==========================================================================
    19. ACTIVE CATEGORY HIGHLIGHT
-   Highlights the category currently visible on the page.
-   Also scrolls the category navigation to the active button.
    ========================================================================== */
 
 function setupActiveCategoryTracking() {
   const navigation = $("category-nav");
-
-  const navigationBar = document.querySelector(
-    ".category-nav"
-  );
+  const navigationBar = document.querySelector(".category-nav");
 
   if (!navigation || !navigationBar) return;
 
-  const buttons = Array.from(
-    document.querySelectorAll(".nav-pill")
-  );
-
+  const buttons = Array.from(document.querySelectorAll(".nav-pill"));
   const navigationHeight = navigationBar.offsetHeight;
 
-
-  // Highlight the selected category button.
   function setActiveCategory(categoryId) {
     buttons.forEach((button) => {
-      const isActive =
-        button.dataset.target === categoryId;
+      const isActive = button.dataset.target === categoryId;
 
       button.classList.toggle("active", isActive);
 
-      button.setAttribute(
-        "aria-selected",
-        isActive ? "true" : "false"
-      );
+      button.setAttribute("aria-selected", isActive ? "true" : "false");
 
-      // Keep the active button visible in the horizontal navigation.
       if (isActive) {
         navigation.scrollTo({
           left:
@@ -1413,8 +1152,6 @@ function setupActiveCategoryTracking() {
     });
   }
 
-
-  // Detect when a category enters the visible area.
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -1424,16 +1161,11 @@ function setupActiveCategoryTracking() {
       });
     },
     {
-      rootMargin:
-        "-" +
-        (navigationHeight + 20) +
-        "px 0px -70% 0px",
+      rootMargin: "-" + (navigationHeight + 20) + "px 0px -70% 0px",
       threshold: 0
     }
   );
 
-
-  // Observe each category section.
   MENU_DATA.forEach((category) => {
     const section = $(category.id);
 
@@ -1442,8 +1174,6 @@ function setupActiveCategoryTracking() {
     }
   });
 
-
-  // Highlight the first category when the page loads.
   if (MENU_DATA.length) {
     setActiveCategory(MENU_DATA[0].id);
   }
@@ -1452,27 +1182,20 @@ function setupActiveCategoryTracking() {
 
 /* ==========================================================================
    20. INITIALIZE THE PAGE
-   Runs once the HTML has finished loading.
    ========================================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Create menu content and navigation.
   renderCategoryNavigation();
   renderMenu();
 
-  // Enable active category tracking.
   setupActiveCategoryTracking();
 
-  // Restore the previously saved cart.
   cart = loadCart();
 
-  // Connect buttons and checkout fields.
   setupEvents();
 
-  // Initialize checkout visibility and cart display.
   syncOrderForm();
   refreshCart();
 
-  // Display the current year in the footer.
   $("year").textContent = new Date().getFullYear();
 });
