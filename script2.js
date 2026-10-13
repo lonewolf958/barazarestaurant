@@ -88,7 +88,6 @@ const MENU_DATA = [
     name: "BBQ Combos",
 
     items: [
-    
       {
         name: "Singles Platter",
         price: 24000,
