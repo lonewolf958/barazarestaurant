@@ -88,20 +88,7 @@ const MENU_DATA = [
     name: "BBQ Combos",
 
     items: [
-      {
-        name: "BBQ Buffet",
-        price: 30000,
-        desc:
-          "Includes Chicken Sekela, Chicken Malai Boti, " +
-          "Chicken Sausages on weekdays, Chicken Lollipops " +
-          "on weekends, Chicken Gizzards, Beef Nundu, " +
-          "Beef Mishkaki, Beef Maini, Mutton Chops, Mutton " +
-          "and Beef Seekh Kebabs, Mutton Mishkaki, Paneer " +
-          "Tikka, BBQ Pineapple, BBQ Corn, Ndizi Choma, " +
-          "Veg Fried Rice, Veg Hakka Noodles, Butter Naan, " +
-          "Plain and Masala Chips, salads and assorted sauces. " +
-          "Subject to availability."
-      },
+    
       {
         name: "Singles Platter",
         price: 24000,
